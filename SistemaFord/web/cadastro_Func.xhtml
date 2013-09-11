@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <!--ui:define name="top">
+        Cadastro de Funcionários
+    </ui:define-->
+
+    <ui:define name="content">
+        <h:form>
+            <p:layout fullPage="false">  
+
+                <p:layoutUnit position="center" style="margin-left: 220px"> 
+                    <p:panel header="Cadastro de Funcionários">
+
+                        <p:outputLabel value="Nome: " style="margin-left: 3px"/>
+                        <p:inputText id="nome" value="" required="true" size="60"/><br/><br/>
+
+                        <p:outputLabel value="Rua: " style="margin-left: 14px"/>
+                        <p:inputText id="rua" value="" required="true" size="60"/>
+
+                        <p:outputLabel value="Número: " style="margin-left: 40px"/>
+                        <p:inputText id="numero" value="" required="true" size="5"/><br/><br/>
+
+                        <p:outputLabel value="Bairro: " style="margin-left: 5px"/>
+                        <p:inputText id="bairro" value="" required="true" size="50"/><br/><br/>
+
+                        <p:outputLabel value="Cidade: " style="margin-left: 1px"/>
+                        <p:inputText id="cidade" value="" required="true" size="20"/><br/><br/>
+
+                        <!--p:outputLabel value="Estado: " style="margin-left: 30px"/-->
+                        <p:selectOneMenu style="margin-left: 49px">
+                            <f:selectItem itemLabel="Selecione o Estado" itemValue="" />
+                            <f:selectItem itemLabel="Acre" itemValue="AC"/>
+                            <f:selectItem itemLabel="Alagoas" itemValue="AL"/>
+                            <f:selectItem itemLabel="Amapá" itemValue="AP"/>
+                            <f:selectItem itemLabel="Amazonas" itemValue="AM"/>
+                            <f:selectItem itemLabel="Bahia" itemValue="BA"/>
+                            <f:selectItem itemLabel="Ceará" itemValue="CE"/>
+                            <f:selectItem itemLabel="Distrito Federal" itemValue="DF"/>
+                            <f:selectItem itemLabel="Espírito Santo" itemValue="ES"/>
+                            <f:selectItem itemLabel="Goiás" itemValue="GO"/>
+                            <f:selectItem itemLabel="Maranhão" itemValue="MA"/>
+                            <f:selectItem itemLabel="Mato Grosso" itemValue="MT"/>
+                            <f:selectItem itemLabel="Moto Grosso do Sul" itemValue="MS"/>
+                            <f:selectItem itemLabel="Minas Gerais" itemValue="MG"/>
+                            <f:selectItem itemLabel="Pará" itemValue="PA"/>
+                            <f:selectItem itemLabel="Paraíba" itemValue="PB"/>
+                            <f:selectItem itemLabel="Paraná" itemValue="PR"/>
+                            <f:selectItem itemLabel="Pernambuco" itemValue="PE"/>
+                            <f:selectItem itemLabel="Piauí" itemValue="PI"/>
+                            <f:selectItem itemLabel="Rio de Janeiro" itemValue="RJ"/>
+                            <f:selectItem itemLabel="Rio Grande do Norte" itemValue="RN"/>
+                            <f:selectItem itemLabel="Rio Grande do Sul" itemValue="RS"/>
+                            <f:selectItem itemLabel="Rondônia" itemValue="RO"/>
+                            <f:selectItem itemLabel="Roraima" itemValue="RR"/>
+                            <f:selectItem itemLabel="Santa Catarina" itemValue="SC"/>
+                            <f:selectItem itemLabel="São Paulo" itemValue="SP"/>
+                            <f:selectItem itemLabel="Sergipe" itemValue="SE"/>
+                            <f:selectItem itemLabel="Tocantins" itemValue="TO"/>
+                        </p:selectOneMenu><br/><br/>
+                        
+                        <p:outputLabel value="Login: " style="margin-left: 6px"/>
+                        <p:inputText id="login" value="" required="true" size="30"/><br/><br/>
+
+                        <p:outputLabel value="Senha: "/>
+                        <p:password id="senha" value="" required="true" size="30"/><br/><br/>
+
+                        <p:outputLabel value="Email: " style="margin-left: 4px"/>
+                        <p:inputText id="email" value="" required="true" size="50"/><br/><br/>
+                        
+                        <p:commandButton value="Salvar" style="margin-left: 10px"/>
+
+                    </p:panel>
+                </p:layoutUnit>
+            </p:layout>
+            <!--/p:panelGrid-->
+        </h:form>
+    </ui:define>
+
+</ui:composition>
