@@ -15,9 +15,12 @@
                 <p:layoutUnit position="center" style="margin-left: 220px"> 
                     <p:panel header="Cadastro de Fornecedor">
                         
-                        <p:dataList>
-                            
-                        </p:dataList>
+                        <p:commandButton value="Pesquisa Itens" onclick="pesq.show();" type="button"/>
+                        <p:dialog header="Pesquisa de Itens" widgetVar="pesq" modal="true" height="200">
+                            <h:form>
+                                
+                            </h:form>
+                        </p:dialog>
                         
                         <p:outputLabel value="Razão Social: "/>
                         <p:inputText id="razaoSocial" value="" required="true" size="60"/><br/><br/>

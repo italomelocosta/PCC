@@ -6,19 +6,17 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns="http://www.w3.org/1999/xhtml">
 
-    <ui:define name="content">
+    <ui:define name="content" rendered="false">
         <h:form>
             <p:panel header="Login">
-                <!--p:outputLabel value="Nome: "/>
-                <p:inputText id="nome" value="" required="true" size="60"/><br/><br/-->
-                <p:outputLabel value="Login: "/>
+                <p:outputLabel value="Login: " style="margin-left: 15px"/>
                 <p:inputText id="login" value="#{funcionarioController.func.login}" required="true"/><br/><br/>
-                <p:outputLabel value="Senha: "/>
+                <p:outputLabel value="Senha: " style="margin-left: 9px"/>
                 <p:password id="senha" value="#{funcionarioController.func.senha}" required="true"/><br/><br/>
                 <h:messages/>
                 <!--p:outputLabel value="Rua: "/>
                 <p:inputText id="rua" value="" required="true"/><br/><br/-->
-                <p:commandButton value="Salvar" action="#{funcionarioController.buscar}"/>
+                <p:commandButton value="Salvar" action="#{funcionarioController.buscar}" style="margin-left: 20px"/>
 
             </p:panel>
         </h:form>
