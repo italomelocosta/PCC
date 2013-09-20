@@ -6,7 +6,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns="http://www.w3.org/1999/xhtml">
 
-    <ui:define name="content" rendered="false">
+    <ui:define name="content">
         <h:form>
             <p:panel header="Login">
                 <p:outputLabel value="Login: " style="margin-left: 15px"/>
@@ -16,7 +16,7 @@
                 <h:messages/>
                 <!--p:outputLabel value="Rua: "/>
                 <p:inputText id="rua" value="" required="true"/><br/><br/-->
-                <p:commandButton value="Salvar" action="#{funcionarioController.buscar}" style="margin-left: 20px"/>
+                <p:commandButton value="Enviar" action="#{funcionarioController.buscar}" style="margin-left: 20px" ajax="false"/>
 
             </p:panel>
         </h:form>

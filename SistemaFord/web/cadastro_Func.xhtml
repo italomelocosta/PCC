@@ -18,22 +18,22 @@
                     <p:panel header="Cadastro de Funcionários">
 
                         <p:outputLabel value="Nome: " style="margin-left: 3px"/>
-                        <p:inputText id="nome" value="" required="true" size="60"/><br/><br/>
+                        <p:inputText id="nome" value="#{enderecoController.funcionario.nome}" required="true" size="60"/><br/><br/>
 
                         <p:outputLabel value="Rua: " style="margin-left: 14px"/>
-                        <p:inputText id="rua" value="" required="true" size="60"/>
+                        <p:inputText id="rua" value="#{enderecoController.end.rua}" required="true" size="60"/>
 
                         <p:outputLabel value="Número: " style="margin-left: 40px"/>
-                        <p:inputText id="numero" value="" required="true" size="5"/><br/><br/>
+                        <p:inputText id="numero" value="#{enderecoController.end.numero}" required="true" size="5"/><br/><br/>
 
                         <p:outputLabel value="Bairro: " style="margin-left: 5px"/>
-                        <p:inputText id="bairro" value="" required="true" size="50"/><br/><br/>
+                        <p:inputText id="bairro" value="#{enderecoController.end.bairro}" required="true" size="50"/><br/><br/>
 
                         <p:outputLabel value="Cidade: " style="margin-left: 1px"/>
-                        <p:inputText id="cidade" value="" required="true" size="20"/><br/><br/>
+                        <p:inputText id="cidade" value="#{enderecoController.end.cidade}" required="true" size="20"/><br/><br/>
 
                         <!--p:outputLabel value="Estado: " style="margin-left: 30px"/-->
-                        <p:selectOneMenu style="margin-left: 49px">
+                        <p:selectOneMenu style="margin-left: 49px" value="#{enderecoController.end.estado}">
                             <f:selectItem itemLabel="Selecione o Estado" itemValue="" />
                             <f:selectItem itemLabel="Acre" itemValue="AC"/>
                             <f:selectItem itemLabel="Alagoas" itemValue="AL"/>
@@ -65,16 +65,24 @@
                         </p:selectOneMenu><br/><br/>
                         
                         <p:outputLabel value="Login: " style="margin-left: 6px"/>
-                        <p:inputText id="login" value="" required="true" size="30"/><br/><br/>
+                        <p:inputText id="login" value="#{enderecoController.funcionario.login}" required="true" size="30"/><br/><br/>
 
                         <p:outputLabel value="Senha: "/>
-                        <p:password id="senha" value="" required="true" size="30"/><br/><br/>
+                        <p:password id="senha" value="#{enderecoController.funcionario.senha}" required="true" size="30"/><br/><br/>
+                        
+                        <p:selectOneMenu style="margin-left: 45px" value="#{enderecoController.gp.idGrupoUser}">
+                            <f:selectItem itemLabel="Sel. Grupo"/>
+                            <f:selectItems value="#{grupoUserController.buscar()}" var="grupo"
+                                           itemLabel="#{grupo.nomeGrupo}" itemValue="#{grupo.idGrupoUser}"/>
+                        </p:selectOneMenu><br/><br/>
 
                         <p:outputLabel value="Email: " style="margin-left: 4px"/>
-                        <p:inputText id="email" value="" required="true" size="50"/><br/><br/>
+                        <p:inputText id="email" value="#{enderecoController.funcionario.email}" required="true" size="50"/><br/><br/>
                         
-                        <p:commandButton value="Salvar" style="margin-left: 10px"/>
-
+                        <p:commandButton value="Salvar" action="#{enderecoController.salvar()}" style="margin-left: 10px"/>
+                        
+                        <p:commandButton id="limpar" value="Limpar" type="reset"/>
+                        
                     </p:panel>
                 </p:layoutUnit>
             </p:layout>

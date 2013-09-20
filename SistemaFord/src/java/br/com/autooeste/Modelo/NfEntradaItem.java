@@ -39,12 +39,12 @@ public class NfEntradaItem implements Serializable {
     @Basic(optional = false)
     @Column(name = "valor")
     private float valor;
-    @JoinColumn(name = "nf_entrada_idnf_entrada", referencedColumnName = "idnf_entrada", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private NfEntrada nfEntrada;
     @JoinColumn(name = "Item_idItem", referencedColumnName = "idItem", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Item item;
+    @JoinColumn(name = "nf_entrada_idnf_entrada", referencedColumnName = "idnf_entrada", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private NfEntrada nfEntrada;
 
     public NfEntradaItem() {
     }
@@ -87,20 +87,20 @@ public class NfEntradaItem implements Serializable {
         this.valor = valor;
     }
 
-    public NfEntrada getNfEntrada() {
-        return nfEntrada;
-    }
-
-    public void setNfEntrada(NfEntrada nfEntrada) {
-        this.nfEntrada = nfEntrada;
-    }
-
     public Item getItem() {
         return item;
     }
 
     public void setItem(Item item) {
         this.item = item;
+    }
+
+    public NfEntrada getNfEntrada() {
+        return nfEntrada;
+    }
+
+    public void setNfEntrada(NfEntrada nfEntrada) {
+        this.nfEntrada = nfEntrada;
     }
 
     @Override

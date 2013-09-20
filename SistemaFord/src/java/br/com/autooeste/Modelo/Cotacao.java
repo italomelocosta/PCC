@@ -40,6 +40,9 @@ public class Cotacao implements Serializable {
     @Basic(optional = false)
     @Column(name = "quantidade")
     private double quantidade;
+    @JoinColumn(name = "Pedido_idPedido", referencedColumnName = "idPedido")
+    @ManyToOne(optional = false)
+    private Pedido pedidoidPedido;
     @JoinColumn(name = "Fornecedor_idFornecedor", referencedColumnName = "idFornecedor")
     @ManyToOne(optional = false)
     private Fornecedor fornecedoridFornecedor;
@@ -82,6 +85,14 @@ public class Cotacao implements Serializable {
 
     public void setQuantidade(double quantidade) {
         this.quantidade = quantidade;
+    }
+
+    public Pedido getPedidoidPedido() {
+        return pedidoidPedido;
+    }
+
+    public void setPedidoidPedido(Pedido pedidoidPedido) {
+        this.pedidoidPedido = pedidoidPedido;
     }
 
     public Fornecedor getFornecedoridFornecedor() {

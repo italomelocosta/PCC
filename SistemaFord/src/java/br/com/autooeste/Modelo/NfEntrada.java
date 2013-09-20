@@ -5,8 +5,8 @@
 package br.com.autooeste.Modelo;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -55,9 +55,9 @@ public class NfEntrada implements Serializable {
     @ManyToOne(optional = false)
     private Fornecedor fornecedoridFornecedor;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "nfEntrada")
-    private List<NfEntradaItem> nfEntradaItemList;
+    private Collection<NfEntradaItem> nfEntradaItemCollection;
     @OneToMany(mappedBy = "nfEntradaId")
-    private List<Pedido> pedidoList;
+    private Collection<Pedido> pedidoCollection;
 
     public NfEntrada() {
     }
@@ -107,21 +107,21 @@ public class NfEntrada implements Serializable {
     }
 
     @XmlTransient
-    public List<NfEntradaItem> getNfEntradaItemList() {
-        return nfEntradaItemList;
+    public Collection<NfEntradaItem> getNfEntradaItemCollection() {
+        return nfEntradaItemCollection;
     }
 
-    public void setNfEntradaItemList(List<NfEntradaItem> nfEntradaItemList) {
-        this.nfEntradaItemList = nfEntradaItemList;
+    public void setNfEntradaItemCollection(Collection<NfEntradaItem> nfEntradaItemCollection) {
+        this.nfEntradaItemCollection = nfEntradaItemCollection;
     }
 
     @XmlTransient
-    public List<Pedido> getPedidoList() {
-        return pedidoList;
+    public Collection<Pedido> getPedidoCollection() {
+        return pedidoCollection;
     }
 
-    public void setPedidoList(List<Pedido> pedidoList) {
-        this.pedidoList = pedidoList;
+    public void setPedidoCollection(Collection<Pedido> pedidoCollection) {
+        this.pedidoCollection = pedidoCollection;
     }
 
     @Override

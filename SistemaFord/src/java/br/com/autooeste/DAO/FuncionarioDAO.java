@@ -30,9 +30,15 @@ public class FuncionarioDAO {
     
     public Funcionario procurar(String login, String senha){
         //return this.entityManager.find(Funcionario.class, login);
-        Query q = entityManager.createNamedQuery("Funcionario.findByLogin");
+        Query q = entityManager.createNamedQuery("Funcionario.findBySenha");
         q.setParameter("login", login);
         q.setParameter("senha", senha);
+        return (Funcionario) q.getSingleResult();
+    }
+    
+    public Funcionario procuraFunc(String login){
+        Query q = entityManager.createNamedQuery("Funcionario.findByLogin");
+        q.setParameter("login", login);
         return (Funcionario) q.getSingleResult();
     }
     

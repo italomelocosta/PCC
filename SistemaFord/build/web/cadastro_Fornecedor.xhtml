@@ -18,28 +18,28 @@
                     <p:panel header="Cadastro de Fornecedor">
 
                         <p:outputLabel value="Razão Social: "/>
-                        <p:inputText id="razaoSocial" value="" required="true" size="60"/><br/><br/>
+                        <p:inputText id="razaoSocial" value="#{enderecoController.forn.razaosocial}" required="true" size="60"/><br/><br/>
                         
                         <p:outputLabel value="CNPJ: " style="margin-left: 43px"/>
-                        <p:inputText id="cnpj" value="" required="true" size="30"/><br/><br/>
+                        <p:inputText id="cnpj" value="#{enderecoController.forn.cnpj}" required="true" size="30"/><br/><br/>
                         
                         <p:outputLabel value="Telefone: " style="margin-left: 29px"/>
-                        <p:inputText id="telefone" value="" required="true" size="60"/><br/><br/>
+                        <p:inputText id="telefone" value="#{enderecoController.forn.telefone}" required="true" size="10"/><br/><br/>
                         
                         <p:outputLabel value="Rua: " style="margin-left: 53px"/>
-                        <p:inputText id="rua" value="" required="true" size="60"/>
+                        <p:inputText id="rua" value="#{enderecoController.end.rua}" required="true" size="60"/>
 
                         <p:outputLabel value="Número: " style="margin-left: 40px"/>
-                        <p:inputText id="numero" value="" required="true" size="5"/><br/><br/>
+                        <p:inputText id="numero" value="#{enderecoController.end.numero}" required="true" size="5"/><br/><br/>
 
                         <p:outputLabel value="Bairro: " style="margin-left: 41px"/>
-                        <p:inputText id="bairro" value="" required="true" size="50"/><br/><br/>
+                        <p:inputText id="bairro" value="#{enderecoController.end.bairro}" required="true" size="50"/><br/><br/>
 
                         <p:outputLabel value="Cidade: " style="margin-left: 35px"/>
-                        <p:inputText id="cidade" value="" required="true" size="20"/><br/><br/>
+                        <p:inputText id="cidade" value="#{enderecoController.end.cidade}" required="true" size="20"/><br/><br/>
 
                         <!--p:outputLabel value="Estado: " style="margin-left: 30px"/-->
-                        <p:selectOneMenu style="margin-left: 83px">
+                        <p:selectOneMenu style="margin-left: 83px" value="#{enderecoController.end.estado}">
                             <f:selectItem itemLabel="Selecione o Estado" itemValue="" />
                             <f:selectItem itemLabel="Acre" itemValue="AC"/>
                             <f:selectItem itemLabel="Alagoas" itemValue="AL"/>
@@ -71,9 +71,9 @@
                         </p:selectOneMenu><br/><br/>
 
                         <p:outputLabel value="Email: " style="margin-left: 42px"/>
-                        <p:inputText id="email" value="" required="true" size="50"/><br/><br/>
+                        <p:inputText id="email" value="#{enderecoController.forn.email}" required="true" size="50"/><br/><br/>
                         
-                        <p:commandButton value="Salvar" style="margin-left: 90px"/>
+                        <p:commandButton value="Salvar" action="#{enderecoController.salvarForn()}" style="margin-left: 90px"/>
 
                     </p:panel>
                 </p:layoutUnit>

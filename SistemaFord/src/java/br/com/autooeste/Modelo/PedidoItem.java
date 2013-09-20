@@ -37,12 +37,12 @@ public class PedidoItem implements Serializable {
     private Float quantidadePedido;
     @Column(name = "valor_unitario_pedido")
     private Float valorUnitarioPedido;
-    @JoinColumn(name = "Pedido_idPedido", referencedColumnName = "idPedido", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Pedido pedido;
     @JoinColumn(name = "Item_idItem", referencedColumnName = "idItem", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Item item;
+    @JoinColumn(name = "Pedido_idPedido", referencedColumnName = "idPedido", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Pedido pedido;
 
     public PedidoItem() {
     }
@@ -79,20 +79,20 @@ public class PedidoItem implements Serializable {
         this.valorUnitarioPedido = valorUnitarioPedido;
     }
 
-    public Pedido getPedido() {
-        return pedido;
-    }
-
-    public void setPedido(Pedido pedido) {
-        this.pedido = pedido;
-    }
-
     public Item getItem() {
         return item;
     }
 
     public void setItem(Item item) {
         this.item = item;
+    }
+
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
     }
 
     @Override

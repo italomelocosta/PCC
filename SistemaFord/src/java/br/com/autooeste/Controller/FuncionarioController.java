@@ -5,6 +5,7 @@
 package br.com.autooeste.Controller;
 
 import br.com.autooeste.DAO.FuncionarioDAO;
+import br.com.autooeste.Modelo.Endereco;
 import br.com.autooeste.Modelo.Funcionario;
 import br.com.autooeste.Util.Conexao;
 import java.util.List;
@@ -56,18 +57,18 @@ public class FuncionarioController {
     }
 
     public String salvar(Funcionario funcionario) {
-        String mensagem = validarFuncionario(funcionario);
+        /*String mensagem = validarFuncionario(funcionario);
         if (mensagem != null) {
             return mensagem;
-        }
+        }*/
         try {
             funcionarioDAO.salvar(funcionario);
             confirmarTransacao();
         } catch (Exception e) {
             cancelarTransacao();
-            return e.getMessage();
+            //return e.getMessage();
         }
-        return null;
+        return "cadastro_Func";
     }
 
     public String remover(Funcionario funcionario) {
@@ -93,6 +94,11 @@ public class FuncionarioController {
         }else
             return "login";
         
+    }
+    
+    public Funcionario buscaFunc(Funcionario funcionario){
+        Funcionario f = funcionarioDAO.procuraFunc(funcionario.getLogin());
+        return f;
     }
 
     private void confirmarTransacao() {

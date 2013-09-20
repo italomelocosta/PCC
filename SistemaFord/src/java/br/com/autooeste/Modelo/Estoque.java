@@ -37,12 +37,12 @@ public class Estoque implements Serializable {
     @Basic(optional = false)
     @Column(name = "quantidade")
     private int quantidade;
-    @JoinColumn(name = "Item_idItem", referencedColumnName = "idItem", insertable = false, updatable = false)
-    @OneToOne(optional = false)
-    private Item item;
     @JoinColumn(name = "Fornecedor_idFornecedor", referencedColumnName = "idFornecedor")
     @ManyToOne(optional = false)
     private Fornecedor fornecedoridFornecedor;
+    @JoinColumn(name = "Item_idItem", referencedColumnName = "idItem", insertable = false, updatable = false)
+    @OneToOne(optional = false)
+    private Item item;
 
     public Estoque() {
     }
@@ -72,20 +72,20 @@ public class Estoque implements Serializable {
         this.quantidade = quantidade;
     }
 
-    public Item getItem() {
-        return item;
-    }
-
-    public void setItem(Item item) {
-        this.item = item;
-    }
-
     public Fornecedor getFornecedoridFornecedor() {
         return fornecedoridFornecedor;
     }
 
     public void setFornecedoridFornecedor(Fornecedor fornecedoridFornecedor) {
         this.fornecedoridFornecedor = fornecedoridFornecedor;
+    }
+
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
     }
 
     @Override

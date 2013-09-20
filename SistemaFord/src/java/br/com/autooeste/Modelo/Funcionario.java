@@ -5,7 +5,7 @@
 package br.com.autooeste.Modelo;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -32,8 +32,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Funcionario.findAll", query = "SELECT f FROM Funcionario f"),
     @NamedQuery(name = "Funcionario.findByIdFuncionario", query = "SELECT f FROM Funcionario f WHERE f.idFuncionario = :idFuncionario"),
-    @NamedQuery(name = "Funcionario.findByLogin", query = "SELECT f FROM Funcionario f WHERE f.login = :login and f.senha = :senha"),
-    @NamedQuery(name = "Funcionario.findBySenha", query = "SELECT f FROM Funcionario f WHERE f.senha = :senha"),
+    @NamedQuery(name = "Funcionario.findByLogin", query = "SELECT f FROM Funcionario f WHERE f.login = :login"),
+    @NamedQuery(name = "Funcionario.findBySenha", query = "SELECT f FROM Funcionario f WHERE f.login = :login and f.senha = :senha"),
     @NamedQuery(name = "Funcionario.findByNome", query = "SELECT f FROM Funcionario f WHERE f.nome = :nome"),
     @NamedQuery(name = "Funcionario.findByEmail", query = "SELECT f FROM Funcionario f WHERE f.email = :email")})
 public class Funcionario implements Serializable {
@@ -54,16 +54,16 @@ public class Funcionario implements Serializable {
     private String nome;
     @Column(name = "email")
     private String email;
-    @JoinColumn(name = "GrupoUser_idGrupoUser", referencedColumnName = "idGrupoUser")
-    @ManyToOne(optional = false)
-    private Grupouser grupoUseridGrupoUser;
     @JoinColumn(name = "Endereco_idEndereco", referencedColumnName = "idEndereco")
     @ManyToOne(optional = false)
     private Endereco enderecoidEndereco;
+    @JoinColumn(name = "GrupoUser_idGrupoUser", referencedColumnName = "idGrupoUser")
+    @ManyToOne(optional = false)
+    private Grupouser grupoUseridGrupoUser;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "funcionarioidFuncionario")
-    private List<RequisicaoEstoque> requisicaoEstoqueList;
+    private Collection<RequisicaoEstoque> requisicaoEstoqueCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "funcionarioidFuncionario")
-    private List<Pedido> pedidoList;
+    private Collection<Pedido> pedidoCollection;
 
     public Funcionario() {
     }
@@ -119,14 +119,6 @@ public class Funcionario implements Serializable {
         this.email = email;
     }
 
-    public Grupouser getGrupoUseridGrupoUser() {
-        return grupoUseridGrupoUser;
-    }
-
-    public void setGrupoUseridGrupoUser(Grupouser grupoUseridGrupoUser) {
-        this.grupoUseridGrupoUser = grupoUseridGrupoUser;
-    }
-
     public Endereco getEnderecoidEndereco() {
         return enderecoidEndereco;
     }
@@ -135,22 +127,30 @@ public class Funcionario implements Serializable {
         this.enderecoidEndereco = enderecoidEndereco;
     }
 
+    public Grupouser getGrupoUseridGrupoUser() {
+        return grupoUseridGrupoUser;
+    }
+
+    public void setGrupoUseridGrupoUser(Grupouser grupoUseridGrupoUser) {
+        this.grupoUseridGrupoUser = grupoUseridGrupoUser;
+    }
+
     @XmlTransient
-    public List<RequisicaoEstoque> getRequisicaoEstoqueList() {
-        return requisicaoEstoqueList;
+    public Collection<RequisicaoEstoque> getRequisicaoEstoqueCollection() {
+        return requisicaoEstoqueCollection;
     }
 
-    public void setRequisicaoEstoqueList(List<RequisicaoEstoque> requisicaoEstoqueList) {
-        this.requisicaoEstoqueList = requisicaoEstoqueList;
+    public void setRequisicaoEstoqueCollection(Collection<RequisicaoEstoque> requisicaoEstoqueCollection) {
+        this.requisicaoEstoqueCollection = requisicaoEstoqueCollection;
     }
 
     @XmlTransient
-    public List<Pedido> getPedidoList() {
-        return pedidoList;
+    public Collection<Pedido> getPedidoCollection() {
+        return pedidoCollection;
     }
 
-    public void setPedidoList(List<Pedido> pedidoList) {
-        this.pedidoList = pedidoList;
+    public void setPedidoCollection(Collection<Pedido> pedidoCollection) {
+        this.pedidoCollection = pedidoCollection;
     }
 
     @Override

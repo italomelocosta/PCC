@@ -9,82 +9,91 @@
 
 
     <ui:define name="content">
+
         <h:form>
             <p:layout fullPage="false">  
 
                 <p:layoutUnit position="center" style="margin-left: 220px"> 
-                    <p:panel header="Cadastro de Fornecedor">
+                    <p:panel header="Cadastro de Pedido">
                         
-                        <p:commandButton value="Pesquisa Itens" onclick="pesq.show();" type="button"/>
-                        <p:dialog header="Pesquisa de Itens" widgetVar="pesq" modal="true" height="200">
-                            <h:form>
-                                
-                            </h:form>
+                        <p:outputLabel value="Solicitante: "/>
+                        <p:inputText id="solicitante" value="#{pedidoController.func.login}" required="true" size="20"/><br/><br/>
+
+                        <p:outputLabel value="Data Solicitação: "/>
+                        <p:inputText id="DtSol" value="#{pedidoController.ped.dataSolicitacao}" required="true" size="20"/><br/><br/>
+                        
+                        
+                        <p:dataTable id="itensSelecionados" value="#{pedidoController.i}" var="itens"
+                                         selectionMode="single" emptyMessage="Não há produtos!!"
+                                         rowKey="#{itens.idItem}">
+                                <p:column>
+                                    <f:facet name="header"><h:outputText value="Código"/></f:facet>
+                                    <h:outputText value="#{itens.idItem}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header"><h:outputText value="Nome"/></f:facet>
+                                    <h:outputText value="#{itens.descricao}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header"><h:outputText value="Medida"/></f:facet>
+                                    <h:outputText value="#{itens.medida}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header"><h:outputText value="Ação"/></f:facet>
+                                    <p:commandLink value="Remover do carrinho">
+                                        <p:collector value="#{produtoCarrinho}"
+                                                     removeFrom="#{carrinhoControle.carrinho.produtos}"/>
+                                    </p:commandLink>
+                                </p:column>
+                            </p:dataTable>
+                        
+                        
+                        <p:commandButton process="@this" value="Consulta Itens" onclick="dialogItens.show();" icon="ui-icon-extlink"/>  
+                        <p:dialog header="Selecione os Itens" showEffect="explode"
+                                  hideEffect="explode"
+                                  widgetVar="dialogItens">
+                            <p:panel header="Itens Cadastrados">
+                                <p:outputPanel id="produtos">
+                                    <p:dataTable value="#{itemController.lista}" var="itens"
+                                                 selectionMode="single" emptyMessage="Não há produtos!!"
+                                                 rowKey="#{itens.idItem}">
+                                        <p:column>
+                                            <f:facet name="header"><h:outputText value="Código"/></f:facet>
+                                            <h:outputText value="#{itens.idItem}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header"><h:outputText value="Descrição"/></f:facet>
+                                            <h:outputText value="#{itens.descricao}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header"><h:outputText value="Descrição"/></f:facet>
+                                            <h:inputText value="#{pedidoController}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header"><h:outputText value="Preço"/></f:facet>
+                                            <h:outputText value="#{itens.medida}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header"><h:outputText value="Ação"/></f:facet>
+                                            <p:commandLink value="Adicionar ao carrinho"
+                                                           actionListener="#{pedidoController.novoItem()}">
+                                                <p:collector value="#{itens}"
+                                                             addTo="#{pedidoController.i}"/>
+                                            </p:commandLink>
+                                        </p:column>
+                                    </p:dataTable>
+                                    
+                                </p:outputPanel>
+
+                            </p:panel>
                         </p:dialog>
-                        
-                        <p:outputLabel value="Razão Social: "/>
-                        <p:inputText id="razaoSocial" value="" required="true" size="60"/><br/><br/>
-                        
-                        <p:outputLabel value="CNPJ: " style="margin-left: 43px"/>
-                        <p:inputText id="cnpj" value="" required="true" size="30"/><br/><br/>
-                        
-                        <p:outputLabel value="Telefone: " style="margin-left: 29px"/>
-                        <p:inputText id="telefone" value="" required="true" size="60"/><br/><br/>
-                        
-                        <p:outputLabel value="Rua: " style="margin-left: 53px"/>
-                        <p:inputText id="rua" value="" required="true" size="60"/>
-
-                        <p:outputLabel value="Número: " style="margin-left: 40px"/>
-                        <p:inputText id="numero" value="" required="true" size="5"/><br/><br/>
-
-                        <p:outputLabel value="Bairro: " style="margin-left: 41px"/>
-                        <p:inputText id="bairro" value="" required="true" size="50"/><br/><br/>
-
-                        <p:outputLabel value="Cidade: " style="margin-left: 35px"/>
-                        <p:inputText id="cidade" value="" required="true" size="20"/><br/><br/>
-
-                        <!--p:outputLabel value="Estado: " style="margin-left: 30px"/-->
-                        <p:selectOneMenu style="margin-left: 83px">
-                            <f:selectItem itemLabel="Selecione o Estado" itemValue="" />
-                            <f:selectItem itemLabel="Acre" itemValue="AC"/>
-                            <f:selectItem itemLabel="Alagoas" itemValue="AL"/>
-                            <f:selectItem itemLabel="Amapá" itemValue="AP"/>
-                            <f:selectItem itemLabel="Amazonas" itemValue="AM"/>
-                            <f:selectItem itemLabel="Bahia" itemValue="BA"/>
-                            <f:selectItem itemLabel="Ceará" itemValue="CE"/>
-                            <f:selectItem itemLabel="Distrito Federal" itemValue="DF"/>
-                            <f:selectItem itemLabel="Espírito Santo" itemValue="ES"/>
-                            <f:selectItem itemLabel="Goiás" itemValue="GO"/>
-                            <f:selectItem itemLabel="Maranhão" itemValue="MA"/>
-                            <f:selectItem itemLabel="Mato Grosso" itemValue="MT"/>
-                            <f:selectItem itemLabel="Moto Grosso do Sul" itemValue="MS"/>
-                            <f:selectItem itemLabel="Minas Gerais" itemValue="MG"/>
-                            <f:selectItem itemLabel="Pará" itemValue="PA"/>
-                            <f:selectItem itemLabel="Paraíba" itemValue="PB"/>
-                            <f:selectItem itemLabel="Paraná" itemValue="PR"/>
-                            <f:selectItem itemLabel="Pernambuco" itemValue="PE"/>
-                            <f:selectItem itemLabel="Piauí" itemValue="PI"/>
-                            <f:selectItem itemLabel="Rio de Janeiro" itemValue="RJ"/>
-                            <f:selectItem itemLabel="Rio Grande do Norte" itemValue="RN"/>
-                            <f:selectItem itemLabel="Rio Grande do Sul" itemValue="RS"/>
-                            <f:selectItem itemLabel="Rondônia" itemValue="RO"/>
-                            <f:selectItem itemLabel="Roraima" itemValue="RR"/>
-                            <f:selectItem itemLabel="Santa Catarina" itemValue="SC"/>
-                            <f:selectItem itemLabel="São Paulo" itemValue="SP"/>
-                            <f:selectItem itemLabel="Sergipe" itemValue="SE"/>
-                            <f:selectItem itemLabel="Tocantins" itemValue="TO"/>
-                        </p:selectOneMenu><br/><br/>
-
-                        <p:outputLabel value="Email: " style="margin-left: 42px"/>
-                        <p:inputText id="email" value="" required="true" size="50"/><br/><br/>
-                        
-                        <p:commandButton value="Salvar" style="margin-left: 90px"/>
-
                     </p:panel>
                 </p:layoutUnit>
             </p:layout>
-            <!--/p:panelGrid-->
         </h:form>
+
+        <!--/p:panelGrid-->
+
     </ui:define>
 
 </ui:composition>

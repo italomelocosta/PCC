@@ -5,7 +5,7 @@
 package br.com.autooeste.Modelo;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "pedido")
 @XmlRootElement
 @NamedQueries({
+     @NamedQuery(name = "Pedido.lastReg", query = "select p from Pedido p where p.idPedido = (select max(ped.idPedido) from Pedido ped)"),
     @NamedQuery(name = "Pedido.findAll", query = "SELECT p FROM Pedido p"),
     @NamedQuery(name = "Pedido.findByIdPedido", query = "SELECT p FROM Pedido p WHERE p.idPedido = :idPedido"),
     @NamedQuery(name = "Pedido.findByDataSolicitacao", query = "SELECT p FROM Pedido p WHERE p.dataSolicitacao = :dataSolicitacao"),
@@ -49,22 +50,24 @@ public class Pedido implements Serializable {
     @Basic(optional = false)
     @Column(name = "aprovado")
     private int aprovado;
-    @Basic(optional = false)
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "valor")
-    private double valor;
+    private Double valor;
     @Column(name = "justificativa")
     private String justificativa;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pedido")
-    private List<PedidoItem> pedidoItemList;
+    private Collection<PedidoItem> pedidoItemCollection;
     @JoinColumn(name = "nf_entrada_id", referencedColumnName = "idnf_entrada")
     @ManyToOne
     private NfEntrada nfEntradaId;
+    @JoinColumn(name = "Fornecedor_idFornecedor", referencedColumnName = "idFornecedor")
+    @ManyToOne
+    private Fornecedor fornecedoridFornecedor;
     @JoinColumn(name = "Funcionario_idFuncionario", referencedColumnName = "idFuncionario")
     @ManyToOne(optional = false)
     private Funcionario funcionarioidFuncionario;
-    @JoinColumn(name = "Fornecedor_idFornecedor", referencedColumnName = "idFornecedor")
-    @ManyToOne(optional = false)
-    private Fornecedor fornecedoridFornecedor;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pedidoidPedido")
+    private Collection<Cotacao> cotacaoCollection;
 
     public Pedido() {
     }
@@ -73,11 +76,10 @@ public class Pedido implements Serializable {
         this.idPedido = idPedido;
     }
 
-    public Pedido(Integer idPedido, String dataSolicitacao, int aprovado, double valor) {
+    public Pedido(Integer idPedido, String dataSolicitacao, int aprovado) {
         this.idPedido = idPedido;
         this.dataSolicitacao = dataSolicitacao;
         this.aprovado = aprovado;
-        this.valor = valor;
     }
 
     public Integer getIdPedido() {
@@ -104,11 +106,11 @@ public class Pedido implements Serializable {
         this.aprovado = aprovado;
     }
 
-    public double getValor() {
+    public Double getValor() {
         return valor;
     }
 
-    public void setValor(double valor) {
+    public void setValor(Double valor) {
         this.valor = valor;
     }
 
@@ -121,12 +123,12 @@ public class Pedido implements Serializable {
     }
 
     @XmlTransient
-    public List<PedidoItem> getPedidoItemList() {
-        return pedidoItemList;
+    public Collection<PedidoItem> getPedidoItemCollection() {
+        return pedidoItemCollection;
     }
 
-    public void setPedidoItemList(List<PedidoItem> pedidoItemList) {
-        this.pedidoItemList = pedidoItemList;
+    public void setPedidoItemCollection(Collection<PedidoItem> pedidoItemCollection) {
+        this.pedidoItemCollection = pedidoItemCollection;
     }
 
     public NfEntrada getNfEntradaId() {
@@ -137,6 +139,14 @@ public class Pedido implements Serializable {
         this.nfEntradaId = nfEntradaId;
     }
 
+    public Fornecedor getFornecedoridFornecedor() {
+        return fornecedoridFornecedor;
+    }
+
+    public void setFornecedoridFornecedor(Fornecedor fornecedoridFornecedor) {
+        this.fornecedoridFornecedor = fornecedoridFornecedor;
+    }
+
     public Funcionario getFuncionarioidFuncionario() {
         return funcionarioidFuncionario;
     }
@@ -145,12 +155,13 @@ public class Pedido implements Serializable {
         this.funcionarioidFuncionario = funcionarioidFuncionario;
     }
 
-    public Fornecedor getFornecedoridFornecedor() {
-        return fornecedoridFornecedor;
+    @XmlTransient
+    public Collection<Cotacao> getCotacaoCollection() {
+        return cotacaoCollection;
     }
 
-    public void setFornecedoridFornecedor(Fornecedor fornecedoridFornecedor) {
-        this.fornecedoridFornecedor = fornecedoridFornecedor;
+    public void setCotacaoCollection(Collection<Cotacao> cotacaoCollection) {
+        this.cotacaoCollection = cotacaoCollection;
     }
 
     @Override

@@ -6,19 +6,13 @@
       xmlns:p="http://primefaces.org/ui">
     <body>
         <div align="center">
-            <!--p:layout style="min-width:1020px;max-width:1020px;min-height:600px"--> 
-            <!--p:layoutUnit position="north" size="100"> 
-                <h:graphicImage url="/tema/imagens/topo.jpg" />
-            </p:layoutUnit--> 
 
-            <!--p:layoutUnit position="west" size="220"> 
-                <ui:insert name="left"-->
             <h:form>
                 <p:menu style="width: 190px">
                     <p:submenu label="Cadastro">
-                        <p:menuitem value="Cadastrar Funcionário" icon="ui-icon-contact" action="cadastro_Func.xhtml"/>
-                        <p:menuitem value="Cadastrar Fornecedor" icon="ui-icon-person" action="cadastro_Fornecedor.xhtml"/>    
-                        <p:menuitem value="Cadastrar Pedido" icon="ui-icon-cart" action="cadastro_pedido"/>
+                        <p:menuitem value="Cadastrar Funcionário" icon="ui-icon-contact" action="cadastro_Func.xhtml" ajax="false"/>
+                        <p:menuitem value="Cadastrar Fornecedor" icon="ui-icon-person" action="cadastro_Fornecedor.xhtml" ajax="false"/>    
+                        <p:menuitem value="Cadastrar Pedido" icon="ui-icon-cart" action="cadastro_pedido.xhtml" ajax="false"/>
                         <p:menuitem value="Cadastrar Requisição" icon="ui-icon-forn"/>
                         <p:menuitem value="Cadastrar Pedido" icon="ui-icon-forn"/>
                         <p:menuitem value="Cadastrar NF-Entrada" icon="ui-icon-forn"/>
@@ -35,14 +29,6 @@
                     </p:submenu>
                 </p:menu>
             </h:form>
-            <!--/ui:insert>
-        </p:layoutUnit--> 
-            <!--p:layoutUnit position="center"> 
-                <ui:insert name="centro">
-                    O que estiver aqui será substituido!
-                </ui:insert>
-            </p:layoutUnit--> 
-            <!--/p:layout--> 
         </div>
 
     </body>

@@ -5,7 +5,7 @@
 package br.com.autooeste.Modelo;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -55,13 +55,13 @@ public class Fornecedor implements Serializable {
     @ManyToOne(optional = false)
     private Endereco enderecoidEndereco;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fornecedoridFornecedor")
-    private List<NfEntrada> nfEntradaList;
+    private Collection<NfEntrada> nfEntradaCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fornecedoridFornecedor")
-    private List<Estoque> estoqueList;
+    private Collection<Estoque> estoqueCollection;
+    @OneToMany(mappedBy = "fornecedoridFornecedor")
+    private Collection<Pedido> pedidoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fornecedoridFornecedor")
-    private List<Pedido> pedidoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fornecedoridFornecedor")
-    private List<Cotacao> cotacaoList;
+    private Collection<Cotacao> cotacaoCollection;
 
     public Fornecedor() {
     }
@@ -118,39 +118,39 @@ public class Fornecedor implements Serializable {
     }
 
     @XmlTransient
-    public List<NfEntrada> getNfEntradaList() {
-        return nfEntradaList;
+    public Collection<NfEntrada> getNfEntradaCollection() {
+        return nfEntradaCollection;
     }
 
-    public void setNfEntradaList(List<NfEntrada> nfEntradaList) {
-        this.nfEntradaList = nfEntradaList;
-    }
-
-    @XmlTransient
-    public List<Estoque> getEstoqueList() {
-        return estoqueList;
-    }
-
-    public void setEstoqueList(List<Estoque> estoqueList) {
-        this.estoqueList = estoqueList;
+    public void setNfEntradaCollection(Collection<NfEntrada> nfEntradaCollection) {
+        this.nfEntradaCollection = nfEntradaCollection;
     }
 
     @XmlTransient
-    public List<Pedido> getPedidoList() {
-        return pedidoList;
+    public Collection<Estoque> getEstoqueCollection() {
+        return estoqueCollection;
     }
 
-    public void setPedidoList(List<Pedido> pedidoList) {
-        this.pedidoList = pedidoList;
+    public void setEstoqueCollection(Collection<Estoque> estoqueCollection) {
+        this.estoqueCollection = estoqueCollection;
     }
 
     @XmlTransient
-    public List<Cotacao> getCotacaoList() {
-        return cotacaoList;
+    public Collection<Pedido> getPedidoCollection() {
+        return pedidoCollection;
     }
 
-    public void setCotacaoList(List<Cotacao> cotacaoList) {
-        this.cotacaoList = cotacaoList;
+    public void setPedidoCollection(Collection<Pedido> pedidoCollection) {
+        this.pedidoCollection = pedidoCollection;
+    }
+
+    @XmlTransient
+    public Collection<Cotacao> getCotacaoCollection() {
+        return cotacaoCollection;
+    }
+
+    public void setCotacaoCollection(Collection<Cotacao> cotacaoCollection) {
+        this.cotacaoCollection = cotacaoCollection;
     }
 
     @Override

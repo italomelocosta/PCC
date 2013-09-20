@@ -5,7 +5,7 @@
 package br.com.autooeste.Modelo;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -47,15 +47,15 @@ public class Item implements Serializable {
     @Column(name = "medida")
     private String medida;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
-    private List<PedidoItem> pedidoItemList;
+    private Collection<PedidoItem> pedidoItemCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
-    private List<NfEntradaItem> nfEntradaItemList;
+    private Collection<NfEntradaItem> nfEntradaItemCollection;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "item")
     private Estoque estoque;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "itemidItem")
-    private List<Cotacao> cotacaoList;
+    private Collection<Cotacao> cotacaoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
-    private List<RequisicaoItem> requisicaoItemList;
+    private Collection<RequisicaoItem> requisicaoItemCollection;
 
     public Item() {
     }
@@ -95,21 +95,21 @@ public class Item implements Serializable {
     }
 
     @XmlTransient
-    public List<PedidoItem> getPedidoItemList() {
-        return pedidoItemList;
+    public Collection<PedidoItem> getPedidoItemCollection() {
+        return pedidoItemCollection;
     }
 
-    public void setPedidoItemList(List<PedidoItem> pedidoItemList) {
-        this.pedidoItemList = pedidoItemList;
+    public void setPedidoItemCollection(Collection<PedidoItem> pedidoItemCollection) {
+        this.pedidoItemCollection = pedidoItemCollection;
     }
 
     @XmlTransient
-    public List<NfEntradaItem> getNfEntradaItemList() {
-        return nfEntradaItemList;
+    public Collection<NfEntradaItem> getNfEntradaItemCollection() {
+        return nfEntradaItemCollection;
     }
 
-    public void setNfEntradaItemList(List<NfEntradaItem> nfEntradaItemList) {
-        this.nfEntradaItemList = nfEntradaItemList;
+    public void setNfEntradaItemCollection(Collection<NfEntradaItem> nfEntradaItemCollection) {
+        this.nfEntradaItemCollection = nfEntradaItemCollection;
     }
 
     public Estoque getEstoque() {
@@ -121,21 +121,21 @@ public class Item implements Serializable {
     }
 
     @XmlTransient
-    public List<Cotacao> getCotacaoList() {
-        return cotacaoList;
+    public Collection<Cotacao> getCotacaoCollection() {
+        return cotacaoCollection;
     }
 
-    public void setCotacaoList(List<Cotacao> cotacaoList) {
-        this.cotacaoList = cotacaoList;
+    public void setCotacaoCollection(Collection<Cotacao> cotacaoCollection) {
+        this.cotacaoCollection = cotacaoCollection;
     }
 
     @XmlTransient
-    public List<RequisicaoItem> getRequisicaoItemList() {
-        return requisicaoItemList;
+    public Collection<RequisicaoItem> getRequisicaoItemCollection() {
+        return requisicaoItemCollection;
     }
 
-    public void setRequisicaoItemList(List<RequisicaoItem> requisicaoItemList) {
-        this.requisicaoItemList = requisicaoItemList;
+    public void setRequisicaoItemCollection(Collection<RequisicaoItem> requisicaoItemCollection) {
+        this.requisicaoItemCollection = requisicaoItemCollection;
     }
 
     @Override
