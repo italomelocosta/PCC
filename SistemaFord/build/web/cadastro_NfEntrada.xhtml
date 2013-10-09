@@ -1,0 +1,154 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="formnf">
+            <p:layout fullPage="false">  
+
+                <p:layoutUnit position="center" style="margin-left: 220px"> 
+                    <p:panel header="Cadastro de Nota Fista de Entrada">
+
+                        <p:outputLabel value="Codigo pedido: " style="margin-left: 34px"/>
+                        <p:inputText value="#{nfentradaController.p.idPedido}" required="true" size="20">
+                            <p:ajax event="blur" listener="#{nfentradaController.p.idPedido}"/>
+                        </p:inputText><br/><br/>
+
+                        <p:outputLabel value="Código Fornecedor: "/>
+                        <p:inputText value="#{nfentradaController.f.idFornecedor}" required="true" size="20">
+                            <p:ajax event="blur" listener="#{nfentradaController.f.idFornecedor}"/>
+                        </p:inputText>
+                        <p:commandButton process="@this" value="Buscar Itens" onclick="dialogForn.show();" 
+                                         icon="ui-icon-extlink"/>  <br/><br/>
+
+                        <p:dialog header="Selecione os Itens" showEffect="explode"
+                                  hideEffect="explode"
+                                  widgetVar="dialogForn">
+
+                            <p:panel header="Fornecedores Cadastrados">
+                                <p:outputPanel>
+                                    <p:dataTable value="#{fornecedorController.buscar}" var="forn"
+                                                 selectionMode="single" emptyMessage="Não há Fornecedores!!"
+                                                 rowKey="#{forn.idFornecedor}">
+                                        <p:column>
+                                            <f:facet name="header"><h:outputText value="Código"/></f:facet>
+                                            <h:outputText value="#{forn.idFornecedor}"/>
+                                        </p:column>
+                                        <p:column headerText="Descrição">
+                                            <!--f:facet name="header"><h:outputText value="Descrição"/></f:facet-->
+                                            <h:outputText value="#{forn.razaosocial}"/>
+                                        </p:column>
+                                    </p:dataTable>
+
+                                </p:outputPanel>
+
+                            </p:panel><br/><br/>
+                        </p:dialog>
+
+                        <p:outputLabel value="Data de Emissão: " style="margin-left: 34px"/>
+                        <p:inputText value="#{nfentradaController.nf.dataEmissao}" required="true" size="20">
+                            <p:ajax event="blur" listener="#{nfentradaController.nf.dataEmissao}"/>
+                        </p:inputText>    <br/><br/>
+
+                        <p:outputLabel value="Data de Entrada: " style="margin-left: 34px"/>
+                        <p:inputText value="#{nfentradaController.nf.dataEntrada}" required="true" size="20">
+                            <p:ajax event="blur" listener="#{nfentradaController.nf.dataEntrada}"/>
+                        </p:inputText>    <br/><br/>
+
+                        <p:growl id="msgs" /> 
+
+                        <p:commandButton process="@this" value="Buscar Itens" onclick="dialogItens.show();" 
+                                         icon="ui-icon-extlink"/>  <br/><br/>
+
+                        <p:dialog header="Selecione os Itens" showEffect="explode"
+                                  hideEffect="explode"
+                                  widgetVar="dialogItens">
+                            <p:panel header="Itens Cadastrados">
+                                <p:outputPanel id="produtos">
+                                    <p:dataTable id="item" value="#{itemController.lista}" var="itens"
+                                                 selectionMode="single" emptyMessage="Não há produtos!!"
+                                                 filteredValue="#{itemController.lista}"
+                                                 rowKey="#{itens.idItem}">
+                                        <p:column>
+                                            <f:facet name="header"><h:outputText value="Código"/></f:facet>
+                                            <h:outputText value="#{itens.idItem}"/>
+                                        </p:column>
+                                        <p:column filterBy="descricao" footerText="contains"
+                                                  filterMatchMode="contains"
+                                                  headerText="Descrição">
+                                            <!--f:facet name="header"><h:outputText value="Descrição"/></f:facet-->
+                                            <h:outputText value="#{itens.descricao}"/>
+                                        </p:column>
+                                        <p:column headerText="Quant. Comprada">
+                                            <h:inputText value="#{nfentradaController.item.quantida}">
+                                                <p:ajax event="blur" listener="#{nfentradaController.item.quantida}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                        <p:column headerText="Medida">
+                                            <h:outputText value="#{itens.medida}"/>
+                                        </p:column>
+                                        <p:column headerText="Valor">
+                                            <h:inputText value="#{nfentradaController.item.valor}">
+                                                <p:ajax event="blur" listener="#{nfentradaController.item.valor}"/>
+                                            </h:inputText>
+                                        </p:column>
+                                        <p:column headerText="Ação">
+                                            <p:commandButton process="@this" value="Adicionar Item" 
+                                                             action="#{nfentradaController.novoItem(itens)}"
+                                                             update=":formnf:coco">
+                                                <p:resetInput target=":formnf:coco"/>
+                                            </p:commandButton>
+                                        </p:column>
+                                    </p:dataTable>
+
+                                </p:outputPanel>
+
+                            </p:panel><br/><br/>
+                        </p:dialog>
+
+                        <p:outputPanel id="selecao">
+                            <p:dataTable id="coco" value="#{nfentradaController.lista}" var="itens2"
+                                         selectionMode="single" emptyMessage="Não há produtos!!"
+                                         rowKey="#{itens2.idItem}">
+                                <p:column headerText="Código">
+                                    <h:outputText value="#{itens2.idItem}"/>
+                                </p:column>
+                                <p:column headerText="Descrição">
+                                    <h:outputText value="#{itens2.descricao}"/>
+                                </p:column>
+                                <p:column headerText="Quantidade">
+                                    <h:outputText value="#{itens2.quantida}"/>
+                                </p:column>
+                                <p:column headerText="Medida">
+                                    <h:outputText value="#{itens2.medida}"/>
+                                </p:column>
+                                <p:column headerText="Valor">
+                                    <h:outputText value="#{itens2.valor}"/>
+                                </p:column>
+                                <p:column headerText="Ação">
+                                    <p:commandLink value="Remover do carrinho">
+                                        <p:collector value="#{itens2}"
+                                                     removeFrom="#{pedidoController.i}"/>
+                                    </p:commandLink>
+                                </p:column>
+                            </p:dataTable>
+                        </p:outputPanel><br/><br/>
+                        
+                        <p:outputLabel value="Valor Total: "/>
+                        <p:inputText value="#{nfentradaController.nf.valorTotal}" required="true" size="20">
+                            <p:ajax event="blur" listener="#{nfentradaController.nf.valorTotal}"/>
+                        </p:inputText>
+
+                        <p:commandButton value="Salvar" process="@this" action="#{nfentradaController.salvar()}"/>
+                    </p:panel>
+                </p:layoutUnit>
+            </p:layout>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

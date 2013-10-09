@@ -10,83 +10,95 @@
 
     <ui:define name="content">
 
-        <h:form>
+        <h:form id="formPed">
             <p:layout fullPage="false">  
 
                 <p:layoutUnit position="center" style="margin-left: 220px"> 
                     <p:panel header="Cadastro de Pedido">
-                        
-                        <p:outputLabel value="Solicitante: "/>
+
+                        <p:outputLabel value="Solicitante: " style="margin-left: 34px"/>
                         <p:inputText id="solicitante" value="#{pedidoController.func.login}" required="true" size="20"/><br/><br/>
 
                         <p:outputLabel value="Data Solicitação: "/>
                         <p:inputText id="DtSol" value="#{pedidoController.ped.dataSolicitacao}" required="true" size="20"/><br/><br/>
-                        
-                        
-                        <p:dataTable id="itensSelecionados" value="#{pedidoController.i}" var="itens"
-                                         selectionMode="single" emptyMessage="Não há produtos!!"
-                                         rowKey="#{itens.idItem}">
-                                <p:column>
-                                    <f:facet name="header"><h:outputText value="Código"/></f:facet>
-                                    <h:outputText value="#{itens.idItem}"/>
-                                </p:column>
-                                <p:column>
-                                    <f:facet name="header"><h:outputText value="Nome"/></f:facet>
-                                    <h:outputText value="#{itens.descricao}"/>
-                                </p:column>
-                                <p:column>
-                                    <f:facet name="header"><h:outputText value="Medida"/></f:facet>
-                                    <h:outputText value="#{itens.medida}"/>
-                                </p:column>
-                                <p:column>
-                                    <f:facet name="header"><h:outputText value="Ação"/></f:facet>
-                                    <p:commandLink value="Remover do carrinho">
-                                        <p:collector value="#{produtoCarrinho}"
-                                                     removeFrom="#{carrinhoControle.carrinho.produtos}"/>
-                                    </p:commandLink>
-                                </p:column>
-                            </p:dataTable>
-                        
-                        
-                        <p:commandButton process="@this" value="Consulta Itens" onclick="dialogItens.show();" icon="ui-icon-extlink"/>  
+
+                        <p:growl id="msgs" /> 
+
+                        <p:commandButton process="@this" value="Consulta Itens" onclick="dialogItens.show();" 
+                                         icon="ui-icon-extlink"/>  <br/><br/>
                         <p:dialog header="Selecione os Itens" showEffect="explode"
                                   hideEffect="explode"
                                   widgetVar="dialogItens">
                             <p:panel header="Itens Cadastrados">
                                 <p:outputPanel id="produtos">
-                                    <p:dataTable value="#{itemController.lista}" var="itens"
+                                    <p:dataTable id="item" value="#{itemController.lista}" var="itens"
                                                  selectionMode="single" emptyMessage="Não há produtos!!"
+                                                 filteredValue="#{itemController.lista}"
                                                  rowKey="#{itens.idItem}">
                                         <p:column>
                                             <f:facet name="header"><h:outputText value="Código"/></f:facet>
                                             <h:outputText value="#{itens.idItem}"/>
                                         </p:column>
-                                        <p:column>
-                                            <f:facet name="header"><h:outputText value="Descrição"/></f:facet>
+                                        <p:column filterBy="descricao" footerText="contains"
+                                                  filterMatchMode="contains"
+                                                  headerText="Descrição">
+                                            <!--f:facet name="header"><h:outputText value="Descrição"/></f:facet-->
                                             <h:outputText value="#{itens.descricao}"/>
                                         </p:column>
-                                        <p:column>
-                                            <f:facet name="header"><h:outputText value="Descrição"/></f:facet>
-                                            <h:inputText value="#{pedidoController}"/>
+                                        <p:column headerText="Quantidade">
+                                            <h:inputText value="#{pedidoController.item.quantida}">
+                                                <p:ajax event="blur" listener="#{pedidoController.item.quantida}"/>
+                                            </h:inputText>
                                         </p:column>
-                                        <p:column>
-                                            <f:facet name="header"><h:outputText value="Preço"/></f:facet>
+                                        <p:column headerText="Medida">
                                             <h:outputText value="#{itens.medida}"/>
                                         </p:column>
-                                        <p:column>
-                                            <f:facet name="header"><h:outputText value="Ação"/></f:facet>
-                                            <p:commandLink value="Adicionar ao carrinho"
-                                                           actionListener="#{pedidoController.novoItem()}">
-                                                <p:collector value="#{itens}"
-                                                             addTo="#{pedidoController.i}"/>
-                                            </p:commandLink>
+                                        <p:column headerText="Ação">
+                                            <p:commandButton process="@this" value="Adicionar Item" 
+                                                             action="#{pedidoController.novoItem(itens)}"
+                                                             update=":formPed:coco">
+                                                <p:resetInput target=":formPed:coco"/>
+                                            </p:commandButton>
                                         </p:column>
                                     </p:dataTable>
-                                    
+
                                 </p:outputPanel>
 
-                            </p:panel>
+                            </p:panel><br/><br/>
                         </p:dialog>
+
+                        <p:outputPanel id="selecao">
+                            <p:dataTable id="coco" value="#{pedidoController.i}" var="itens2"
+                                         selectionMode="single" emptyMessage="Não há produtos!!"
+                                         rowKey="#{itens2.idItem}">
+                                <p:column>
+                                    <f:facet name="header"><h:outputText value="Código"/></f:facet>
+                                    <h:outputText value="#{itens2.idItem}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header"><h:outputText value="Descricao"/></f:facet>
+                                    <h:outputText value="#{itens2.descricao}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header"><h:outputText value="Medida"/></f:facet>
+                                    <h:outputText value="#{itens2.medida}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header"><h:outputText value="Quantidade"/></f:facet>
+                                    <h:outputText value="#{itens2.quantida}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header"><h:outputText value="Ação"/></f:facet>
+                                    <p:commandLink value="Remover do carrinho">
+                                        <p:collector value="#{itens2}"
+                                                     removeFrom="#{pedidoController.i}"/>
+                                    </p:commandLink>
+                                </p:column>
+                            </p:dataTable>
+                        </p:outputPanel><br/><br/>
+
+                        <p:commandButton value="Salvar" action="#{pedidoController.salvar()}"/>
+
                     </p:panel>
                 </p:layoutUnit>
             </p:layout>

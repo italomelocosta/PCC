@@ -5,9 +5,12 @@
 package br.com.autooeste.Modelo;
 
 import java.io.Serializable;
+import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -24,43 +27,41 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "PedidoItem.findAll", query = "SELECT p FROM PedidoItem p"),
-    @NamedQuery(name = "PedidoItem.findByPedidoidPedido", query = "SELECT p FROM PedidoItem p WHERE p.pedidoItemPK.pedidoidPedido = :pedidoidPedido"),
-    @NamedQuery(name = "PedidoItem.findByItemidItem", query = "SELECT p FROM PedidoItem p WHERE p.pedidoItemPK.itemidItem = :itemidItem"),
+    @NamedQuery(name = "PedidoItem.findByIdPedItem", query = "SELECT p FROM PedidoItem p WHERE p.idPedItem = :idPedItem"),
     @NamedQuery(name = "PedidoItem.findByQuantidadePedido", query = "SELECT p FROM PedidoItem p WHERE p.quantidadePedido = :quantidadePedido"),
     @NamedQuery(name = "PedidoItem.findByValorUnitarioPedido", query = "SELECT p FROM PedidoItem p WHERE p.valorUnitarioPedido = :valorUnitarioPedido")})
 public class PedidoItem implements Serializable {
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected PedidoItemPK pedidoItemPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "idPedItem")
+    private Integer idPedItem;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "quantidade_pedido")
     private Float quantidadePedido;
     @Column(name = "valor_unitario_pedido")
     private Float valorUnitarioPedido;
-    @JoinColumn(name = "Item_idItem", referencedColumnName = "idItem", insertable = false, updatable = false)
+    @JoinColumn(name = "Item_idItem", referencedColumnName = "idItem")
     @ManyToOne(optional = false)
-    private Item item;
-    @JoinColumn(name = "Pedido_idPedido", referencedColumnName = "idPedido", insertable = false, updatable = false)
+    private Item itemidItem;
+    @JoinColumn(name = "Pedido_idPedido", referencedColumnName = "idPedido")
     @ManyToOne(optional = false)
-    private Pedido pedido;
+    private Pedido pedidoidPedido;
 
     public PedidoItem() {
     }
 
-    public PedidoItem(PedidoItemPK pedidoItemPK) {
-        this.pedidoItemPK = pedidoItemPK;
+    public PedidoItem(Integer idPedItem) {
+        this.idPedItem = idPedItem;
     }
 
-    public PedidoItem(int pedidoidPedido, int itemidItem) {
-        this.pedidoItemPK = new PedidoItemPK(pedidoidPedido, itemidItem);
+    public Integer getIdPedItem() {
+        return idPedItem;
     }
 
-    public PedidoItemPK getPedidoItemPK() {
-        return pedidoItemPK;
-    }
-
-    public void setPedidoItemPK(PedidoItemPK pedidoItemPK) {
-        this.pedidoItemPK = pedidoItemPK;
+    public void setIdPedItem(Integer idPedItem) {
+        this.idPedItem = idPedItem;
     }
 
     public Float getQuantidadePedido() {
@@ -79,26 +80,26 @@ public class PedidoItem implements Serializable {
         this.valorUnitarioPedido = valorUnitarioPedido;
     }
 
-    public Item getItem() {
-        return item;
+    public Item getItemidItem() {
+        return itemidItem;
     }
 
-    public void setItem(Item item) {
-        this.item = item;
+    public void setItemidItem(Item itemidItem) {
+        this.itemidItem = itemidItem;
     }
 
-    public Pedido getPedido() {
-        return pedido;
+    public Pedido getPedidoidPedido() {
+        return pedidoidPedido;
     }
 
-    public void setPedido(Pedido pedido) {
-        this.pedido = pedido;
+    public void setPedidoidPedido(Pedido pedidoidPedido) {
+        this.pedidoidPedido = pedidoidPedido;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (pedidoItemPK != null ? pedidoItemPK.hashCode() : 0);
+        hash += (idPedItem != null ? idPedItem.hashCode() : 0);
         return hash;
     }
 
@@ -109,7 +110,7 @@ public class PedidoItem implements Serializable {
             return false;
         }
         PedidoItem other = (PedidoItem) object;
-        if ((this.pedidoItemPK == null && other.pedidoItemPK != null) || (this.pedidoItemPK != null && !this.pedidoItemPK.equals(other.pedidoItemPK))) {
+        if ((this.idPedItem == null && other.idPedItem != null) || (this.idPedItem != null && !this.idPedItem.equals(other.idPedItem))) {
             return false;
         }
         return true;
@@ -117,7 +118,7 @@ public class PedidoItem implements Serializable {
 
     @Override
     public String toString() {
-        return "br.com.autooeste.Modelo.PedidoItem[ pedidoItemPK=" + pedidoItemPK + " ]";
+        return "br.com.autooeste.Modelo.PedidoItem[ idPedItem=" + idPedItem + " ]";
     }
     
 }

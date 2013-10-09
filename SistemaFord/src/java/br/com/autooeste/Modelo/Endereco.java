@@ -5,7 +5,7 @@
 package br.com.autooeste.Modelo;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "endereco")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Endereco.lastReg", query = "select e from Endereco e where e.idEndereco = (select max(ed.idEndereco) from Endereco ed)"),
+    @NamedQuery(name = "Endereco.lastReg", query = "SELECT e FROM Endereco e where e.idEndereco = (select max(ed.idEndereco) from Endereco ed)"),
     @NamedQuery(name = "Endereco.findAll", query = "SELECT e FROM Endereco e"),
     @NamedQuery(name = "Endereco.findByIdEndereco", query = "SELECT e FROM Endereco e WHERE e.idEndereco = :idEndereco"),
     @NamedQuery(name = "Endereco.findByRua", query = "SELECT e FROM Endereco e WHERE e.rua = :rua"),
@@ -37,7 +37,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Endereco.findByEstado", query = "SELECT e FROM Endereco e WHERE e.estado = :estado"),
     @NamedQuery(name = "Endereco.findByNumero", query = "SELECT e FROM Endereco e WHERE e.numero = :numero")})
 public class Endereco implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,9 +59,9 @@ public class Endereco implements Serializable {
     @Column(name = "numero")
     private int numero;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "enderecoidEndereco")
-    private Collection<Fornecedor> fornecedorCollection;
+    private List<Fornecedor> fornecedorList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "enderecoidEndereco")
-    private Collection<Funcionario> funcionarioCollection;
+    private List<Funcionario> funcionarioList;
 
     public Endereco() {
     }
@@ -129,21 +128,21 @@ public class Endereco implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Fornecedor> getFornecedorCollection() {
-        return fornecedorCollection;
+    public List<Fornecedor> getFornecedorList() {
+        return fornecedorList;
     }
 
-    public void setFornecedorCollection(Collection<Fornecedor> fornecedorCollection) {
-        this.fornecedorCollection = fornecedorCollection;
+    public void setFornecedorList(List<Fornecedor> fornecedorList) {
+        this.fornecedorList = fornecedorList;
     }
 
     @XmlTransient
-    public Collection<Funcionario> getFuncionarioCollection() {
-        return funcionarioCollection;
+    public List<Funcionario> getFuncionarioList() {
+        return funcionarioList;
     }
 
-    public void setFuncionarioCollection(Collection<Funcionario> funcionarioCollection) {
-        this.funcionarioCollection = funcionarioCollection;
+    public void setFuncionarioList(List<Funcionario> funcionarioList) {
+        this.funcionarioList = funcionarioList;
     }
 
     @Override
@@ -170,4 +169,5 @@ public class Endereco implements Serializable {
     public String toString() {
         return "br.com.autooeste.Modelo.Endereco[ idEndereco=" + idEndereco + " ]";
     }
+    
 }

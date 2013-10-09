@@ -29,4 +29,15 @@ public class PedidoDAO {
       
         return (Pedido) q.getSingleResult();
     }
+    
+    public Pedido buscarPedido(int codigo){
+        Query q = entityManager.createNamedQuery("Pedido.findByIdPedido");
+        q.setParameter("idPedido", codigo);
+        
+        return (Pedido) q.getSingleResult();
+    }
+    
+    public void atualizar(Pedido pedido){
+        this.entityManager.merge(pedido);
+    }
 }

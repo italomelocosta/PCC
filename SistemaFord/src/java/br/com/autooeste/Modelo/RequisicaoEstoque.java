@@ -5,7 +5,7 @@
 package br.com.autooeste.Modelo;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -50,8 +50,8 @@ public class RequisicaoEstoque implements Serializable {
     @JoinColumn(name = "Funcionario_idFuncionario", referencedColumnName = "idFuncionario")
     @ManyToOne(optional = false)
     private Funcionario funcionarioidFuncionario;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "requisicaoEstoque")
-    private Collection<RequisicaoItem> requisicaoItemCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "requisicaoestoqueidRequisicaoestoque")
+    private List<RequisicaoItem> requisicaoItemList;
 
     public RequisicaoEstoque() {
     }
@@ -99,12 +99,12 @@ public class RequisicaoEstoque implements Serializable {
     }
 
     @XmlTransient
-    public Collection<RequisicaoItem> getRequisicaoItemCollection() {
-        return requisicaoItemCollection;
+    public List<RequisicaoItem> getRequisicaoItemList() {
+        return requisicaoItemList;
     }
 
-    public void setRequisicaoItemCollection(Collection<RequisicaoItem> requisicaoItemCollection) {
-        this.requisicaoItemCollection = requisicaoItemCollection;
+    public void setRequisicaoItemList(List<RequisicaoItem> requisicaoItemList) {
+        this.requisicaoItemList = requisicaoItemList;
     }
 
     @Override

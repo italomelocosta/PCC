@@ -5,9 +5,12 @@
 package br.com.autooeste.Modelo;
 
 import java.io.Serializable;
+import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -24,40 +27,38 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "RequisicaoItem.findAll", query = "SELECT r FROM RequisicaoItem r"),
-    @NamedQuery(name = "RequisicaoItem.findByItemidItem", query = "SELECT r FROM RequisicaoItem r WHERE r.requisicaoItemPK.itemidItem = :itemidItem"),
-    @NamedQuery(name = "RequisicaoItem.findByRequisicaoestoqueidRequisicaoestoque", query = "SELECT r FROM RequisicaoItem r WHERE r.requisicaoItemPK.requisicaoestoqueidRequisicaoestoque = :requisicaoestoqueidRequisicaoestoque"),
+    @NamedQuery(name = "RequisicaoItem.findByIdReqItem", query = "SELECT r FROM RequisicaoItem r WHERE r.idReqItem = :idReqItem"),
     @NamedQuery(name = "RequisicaoItem.findByQuantidadeRequerida", query = "SELECT r FROM RequisicaoItem r WHERE r.quantidadeRequerida = :quantidadeRequerida")})
 public class RequisicaoItem implements Serializable {
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected RequisicaoItemPK requisicaoItemPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "idReqItem")
+    private Integer idReqItem;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "quantidade_requerida")
     private Float quantidadeRequerida;
-    @JoinColumn(name = "Requisicao_estoque_idRequisicao_estoque", referencedColumnName = "idRequisicao_estoque", insertable = false, updatable = false)
+    @JoinColumn(name = "Requisicao_estoque_idRequisicao_estoque", referencedColumnName = "idRequisicao_estoque")
     @ManyToOne(optional = false)
-    private RequisicaoEstoque requisicaoEstoque;
-    @JoinColumn(name = "Item_idItem", referencedColumnName = "idItem", insertable = false, updatable = false)
+    private RequisicaoEstoque requisicaoestoqueidRequisicaoestoque;
+    @JoinColumn(name = "Item_idItem", referencedColumnName = "idItem")
     @ManyToOne(optional = false)
-    private Item item;
+    private Item itemidItem;
 
     public RequisicaoItem() {
     }
 
-    public RequisicaoItem(RequisicaoItemPK requisicaoItemPK) {
-        this.requisicaoItemPK = requisicaoItemPK;
+    public RequisicaoItem(Integer idReqItem) {
+        this.idReqItem = idReqItem;
     }
 
-    public RequisicaoItem(int itemidItem, int requisicaoestoqueidRequisicaoestoque) {
-        this.requisicaoItemPK = new RequisicaoItemPK(itemidItem, requisicaoestoqueidRequisicaoestoque);
+    public Integer getIdReqItem() {
+        return idReqItem;
     }
 
-    public RequisicaoItemPK getRequisicaoItemPK() {
-        return requisicaoItemPK;
-    }
-
-    public void setRequisicaoItemPK(RequisicaoItemPK requisicaoItemPK) {
-        this.requisicaoItemPK = requisicaoItemPK;
+    public void setIdReqItem(Integer idReqItem) {
+        this.idReqItem = idReqItem;
     }
 
     public Float getQuantidadeRequerida() {
@@ -68,26 +69,26 @@ public class RequisicaoItem implements Serializable {
         this.quantidadeRequerida = quantidadeRequerida;
     }
 
-    public RequisicaoEstoque getRequisicaoEstoque() {
-        return requisicaoEstoque;
+    public RequisicaoEstoque getRequisicaoestoqueidRequisicaoestoque() {
+        return requisicaoestoqueidRequisicaoestoque;
     }
 
-    public void setRequisicaoEstoque(RequisicaoEstoque requisicaoEstoque) {
-        this.requisicaoEstoque = requisicaoEstoque;
+    public void setRequisicaoestoqueidRequisicaoestoque(RequisicaoEstoque requisicaoestoqueidRequisicaoestoque) {
+        this.requisicaoestoqueidRequisicaoestoque = requisicaoestoqueidRequisicaoestoque;
     }
 
-    public Item getItem() {
-        return item;
+    public Item getItemidItem() {
+        return itemidItem;
     }
 
-    public void setItem(Item item) {
-        this.item = item;
+    public void setItemidItem(Item itemidItem) {
+        this.itemidItem = itemidItem;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (requisicaoItemPK != null ? requisicaoItemPK.hashCode() : 0);
+        hash += (idReqItem != null ? idReqItem.hashCode() : 0);
         return hash;
     }
 
@@ -98,7 +99,7 @@ public class RequisicaoItem implements Serializable {
             return false;
         }
         RequisicaoItem other = (RequisicaoItem) object;
-        if ((this.requisicaoItemPK == null && other.requisicaoItemPK != null) || (this.requisicaoItemPK != null && !this.requisicaoItemPK.equals(other.requisicaoItemPK))) {
+        if ((this.idReqItem == null && other.idReqItem != null) || (this.idReqItem != null && !this.idReqItem.equals(other.idReqItem))) {
             return false;
         }
         return true;
@@ -106,7 +107,7 @@ public class RequisicaoItem implements Serializable {
 
     @Override
     public String toString() {
-        return "br.com.autooeste.Modelo.RequisicaoItem[ requisicaoItemPK=" + requisicaoItemPK + " ]";
+        return "br.com.autooeste.Modelo.RequisicaoItem[ idReqItem=" + idReqItem + " ]";
     }
     
 }

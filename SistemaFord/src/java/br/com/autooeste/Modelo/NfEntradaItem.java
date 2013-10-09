@@ -7,8 +7,10 @@ package br.com.autooeste.Modelo;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -25,50 +27,48 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "NfEntradaItem.findAll", query = "SELECT n FROM NfEntradaItem n"),
-    @NamedQuery(name = "NfEntradaItem.findByNfEntradaIdnfEntrada", query = "SELECT n FROM NfEntradaItem n WHERE n.nfEntradaItemPK.nfEntradaIdnfEntrada = :nfEntradaIdnfEntrada"),
-    @NamedQuery(name = "NfEntradaItem.findByItemidItem", query = "SELECT n FROM NfEntradaItem n WHERE n.nfEntradaItemPK.itemidItem = :itemidItem"),
+    @NamedQuery(name = "NfEntradaItem.findByIdNfEntrada", query = "SELECT n FROM NfEntradaItem n WHERE n.idNfEntrada = :idNfEntrada"),
     @NamedQuery(name = "NfEntradaItem.findByQuantidadeComprada", query = "SELECT n FROM NfEntradaItem n WHERE n.quantidadeComprada = :quantidadeComprada"),
     @NamedQuery(name = "NfEntradaItem.findByValor", query = "SELECT n FROM NfEntradaItem n WHERE n.valor = :valor")})
 public class NfEntradaItem implements Serializable {
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected NfEntradaItemPK nfEntradaItemPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "idNfEntrada")
+    private Integer idNfEntrada;
     @Basic(optional = false)
     @Column(name = "quantidade_comprada")
     private float quantidadeComprada;
     @Basic(optional = false)
     @Column(name = "valor")
     private float valor;
-    @JoinColumn(name = "Item_idItem", referencedColumnName = "idItem", insertable = false, updatable = false)
+    @JoinColumn(name = "Item_idItem", referencedColumnName = "idItem")
     @ManyToOne(optional = false)
-    private Item item;
-    @JoinColumn(name = "nf_entrada_idnf_entrada", referencedColumnName = "idnf_entrada", insertable = false, updatable = false)
+    private Item itemidItem;
+    @JoinColumn(name = "nf_entrada_idnf_entrada", referencedColumnName = "idnf_entrada")
     @ManyToOne(optional = false)
-    private NfEntrada nfEntrada;
+    private NfEntrada nfEntradaIdnfEntrada;
 
     public NfEntradaItem() {
     }
 
-    public NfEntradaItem(NfEntradaItemPK nfEntradaItemPK) {
-        this.nfEntradaItemPK = nfEntradaItemPK;
+    public NfEntradaItem(Integer idNfEntrada) {
+        this.idNfEntrada = idNfEntrada;
     }
 
-    public NfEntradaItem(NfEntradaItemPK nfEntradaItemPK, float quantidadeComprada, float valor) {
-        this.nfEntradaItemPK = nfEntradaItemPK;
+    public NfEntradaItem(Integer idNfEntrada, float quantidadeComprada, float valor) {
+        this.idNfEntrada = idNfEntrada;
         this.quantidadeComprada = quantidadeComprada;
         this.valor = valor;
     }
 
-    public NfEntradaItem(int nfEntradaIdnfEntrada, int itemidItem) {
-        this.nfEntradaItemPK = new NfEntradaItemPK(nfEntradaIdnfEntrada, itemidItem);
+    public Integer getIdNfEntrada() {
+        return idNfEntrada;
     }
 
-    public NfEntradaItemPK getNfEntradaItemPK() {
-        return nfEntradaItemPK;
-    }
-
-    public void setNfEntradaItemPK(NfEntradaItemPK nfEntradaItemPK) {
-        this.nfEntradaItemPK = nfEntradaItemPK;
+    public void setIdNfEntrada(Integer idNfEntrada) {
+        this.idNfEntrada = idNfEntrada;
     }
 
     public float getQuantidadeComprada() {
@@ -87,26 +87,26 @@ public class NfEntradaItem implements Serializable {
         this.valor = valor;
     }
 
-    public Item getItem() {
-        return item;
+    public Item getItemidItem() {
+        return itemidItem;
     }
 
-    public void setItem(Item item) {
-        this.item = item;
+    public void setItemidItem(Item itemidItem) {
+        this.itemidItem = itemidItem;
     }
 
-    public NfEntrada getNfEntrada() {
-        return nfEntrada;
+    public NfEntrada getNfEntradaIdnfEntrada() {
+        return nfEntradaIdnfEntrada;
     }
 
-    public void setNfEntrada(NfEntrada nfEntrada) {
-        this.nfEntrada = nfEntrada;
+    public void setNfEntradaIdnfEntrada(NfEntrada nfEntradaIdnfEntrada) {
+        this.nfEntradaIdnfEntrada = nfEntradaIdnfEntrada;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (nfEntradaItemPK != null ? nfEntradaItemPK.hashCode() : 0);
+        hash += (idNfEntrada != null ? idNfEntrada.hashCode() : 0);
         return hash;
     }
 
@@ -117,7 +117,7 @@ public class NfEntradaItem implements Serializable {
             return false;
         }
         NfEntradaItem other = (NfEntradaItem) object;
-        if ((this.nfEntradaItemPK == null && other.nfEntradaItemPK != null) || (this.nfEntradaItemPK != null && !this.nfEntradaItemPK.equals(other.nfEntradaItemPK))) {
+        if ((this.idNfEntrada == null && other.idNfEntrada != null) || (this.idNfEntrada != null && !this.idNfEntrada.equals(other.idNfEntrada))) {
             return false;
         }
         return true;
@@ -125,7 +125,7 @@ public class NfEntradaItem implements Serializable {
 
     @Override
     public String toString() {
-        return "br.com.autooeste.Modelo.NfEntradaItem[ nfEntradaItemPK=" + nfEntradaItemPK + " ]";
+        return "br.com.autooeste.Modelo.NfEntradaItem[ idNfEntrada=" + idNfEntrada + " ]";
     }
     
 }

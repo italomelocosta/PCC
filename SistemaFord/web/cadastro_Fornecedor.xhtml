@@ -73,6 +73,9 @@
                         <p:outputLabel value="Email: " style="margin-left: 42px"/>
                         <p:inputText id="email" value="#{enderecoController.forn.email}" required="true" size="50"/><br/><br/>
                         
+                        
+                        <p:outputLabel value="#{pedidoController.i.size()}" />
+                        
                         <p:commandButton value="Salvar" action="#{enderecoController.salvarForn()}" style="margin-left: 90px"/>
 
                     </p:panel>

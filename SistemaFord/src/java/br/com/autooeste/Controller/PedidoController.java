@@ -10,49 +10,66 @@ import br.com.autooeste.Modelo.Item;
 import br.com.autooeste.Modelo.Pedido;
 import br.com.autooeste.Modelo.PedidoItem;
 import br.com.autooeste.Util.Conexao;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
  * @author Italo
  */
 @ManagedBean
-@RequestScoped
-public class PedidoController {
+@SessionScoped
+public class PedidoController implements Serializable {
 
     private EntityManager em;
     private Pedido ped;
     private PedidoDAO pDAO;
-    private List<Item> i;
-    private Item item;
+    private List<Item> i = null;
     private PedidoItem pI;
     private PedidoItemController pIController;
     private Funcionario func;
     private FuncionarioController fController;
+    private int coco = 0;
+    private Item item;
 
     public PedidoController() {
         em = Conexao.getEntityManager();
         em.getTransaction().begin();
         ped = new Pedido();
         pDAO = new PedidoDAO(em);
-        i = new ArrayList<Item>();
         pIController = new PedidoItemController();
         func = new Funcionario();
         fController = new FuncionarioController();
         pI = new PedidoItem();
+        item = new Item();
     }
-    
-    public void novoItem() {
-        this.item = new Item();
+
+    public void novoItem(Item itens) {
+        if (i == null) {
+            i = new ArrayList<Item>();
+        }
+        //System.out.println("\n\n\n\n\n" + item.getQuantida());
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        HttpServletRequest rq = (HttpServletRequest) context.getRequest();
+        itens.setQuantida(item.getQuantida());
+        i.add(itens);
     }
 
     public String salvar() {
+        //ItemController ic = new ItemController();
+        //i = (ArrayList<Item>) ic.getLista();
+        //System.out.println("\n\n\n\n" + func.getLogin());
         Funcionario buscaFunc = fController.buscaFunc(func);
         ped.setAprovado(0);
+        ped.setStatus(0);
         ped.setFuncionarioidFuncionario(buscaFunc);
         try {
             pDAO.salvar(ped);
@@ -62,16 +79,34 @@ public class PedidoController {
             //return e.getMessage();
         }
         Pedido retorno = pDAO.procurar();
-        pI.setPedido(retorno);
-        
-        int j = 0;
-        while (!i.isEmpty()) {
-            pI.setItem(i.get(j));
-            pIController.salvar(pI);
-            i.remove(j);
-            j++;
+        pI.setPedidoidPedido(retorno);
+
+        int tamanho = i.size() - 1;
+        for (int j = 0; j <= tamanho; j++) {
+            pI.setQuantidadePedido(i.get(j).getQuantida());
+            pI.setItemidItem(i.get(j));
+            try {
+                pIController.salvar(pI);
+            } catch (Exception e) {
+                cancelarTransacao();
+            }
+            //i.remove(j);
+            //j++;
         }
-        return "cadastro_Fornecedor";
+        return "cadastro_pedido";
+    }
+    
+    public void atualizar(Pedido pedido){
+        try{
+            pDAO.atualizar(pedido);
+            confirmarTransacao();
+        }catch(Exception e){
+            cancelarTransacao();
+        }
+    }
+    
+    public Pedido buscar(int codigo){
+        return pDAO.buscarPedido(codigo);
     }
 
     private void confirmarTransacao() {
@@ -108,16 +143,8 @@ public class PedidoController {
         return i;
     }
 
-    public void setI(List<Item> i) {
+    public void setI(ArrayList<Item> i) {
         this.i = i;
-    }
-
-    public Item getItem() {
-        return item;
-    }
-
-    public void setItem(Item item) {
-        this.item = item;
     }
 
     public PedidoItem getpI() {
@@ -127,6 +154,20 @@ public class PedidoController {
     public void setpI(PedidoItem pI) {
         this.pI = pI;
     }
-    
-    
+
+    public int getCoco() {
+        return coco;
+    }
+
+    public void setCoco(int coco) {
+        this.coco = coco;
+    }
+
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
+    }
 }

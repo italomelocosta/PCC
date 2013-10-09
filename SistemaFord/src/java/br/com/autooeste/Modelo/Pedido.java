@@ -5,9 +5,7 @@
 package br.com.autooeste.Modelo;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,10 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -30,13 +26,13 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "pedido")
 @XmlRootElement
 @NamedQueries({
-     @NamedQuery(name = "Pedido.lastReg", query = "select p from Pedido p where p.idPedido = (select max(ped.idPedido) from Pedido ped)"),
     @NamedQuery(name = "Pedido.findAll", query = "SELECT p FROM Pedido p"),
     @NamedQuery(name = "Pedido.findByIdPedido", query = "SELECT p FROM Pedido p WHERE p.idPedido = :idPedido"),
     @NamedQuery(name = "Pedido.findByDataSolicitacao", query = "SELECT p FROM Pedido p WHERE p.dataSolicitacao = :dataSolicitacao"),
     @NamedQuery(name = "Pedido.findByAprovado", query = "SELECT p FROM Pedido p WHERE p.aprovado = :aprovado"),
     @NamedQuery(name = "Pedido.findByValor", query = "SELECT p FROM Pedido p WHERE p.valor = :valor"),
-    @NamedQuery(name = "Pedido.findByJustificativa", query = "SELECT p FROM Pedido p WHERE p.justificativa = :justificativa")})
+    @NamedQuery(name = "Pedido.findByJustificativa", query = "SELECT p FROM Pedido p WHERE p.justificativa = :justificativa"),
+    @NamedQuery(name = "Pedido.findByStatus", query = "SELECT p FROM Pedido p WHERE p.status = :status")})
 public class Pedido implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -52,22 +48,21 @@ public class Pedido implements Serializable {
     private int aprovado;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "valor")
-    private Double valor;
+    private Float valor;
     @Column(name = "justificativa")
     private String justificativa;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pedido")
-    private Collection<PedidoItem> pedidoItemCollection;
+    @Basic(optional = false)
+    @Column(name = "status")
+    private int status;
     @JoinColumn(name = "nf_entrada_id", referencedColumnName = "idnf_entrada")
     @ManyToOne
     private NfEntrada nfEntradaId;
-    @JoinColumn(name = "Fornecedor_idFornecedor", referencedColumnName = "idFornecedor")
-    @ManyToOne
-    private Fornecedor fornecedoridFornecedor;
     @JoinColumn(name = "Funcionario_idFuncionario", referencedColumnName = "idFuncionario")
     @ManyToOne(optional = false)
     private Funcionario funcionarioidFuncionario;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pedidoidPedido")
-    private Collection<Cotacao> cotacaoCollection;
+    @JoinColumn(name = "Fornecedor_idFornecedor", referencedColumnName = "idFornecedor")
+    @ManyToOne
+    private Fornecedor fornecedoridFornecedor;
 
     public Pedido() {
     }
@@ -76,10 +71,11 @@ public class Pedido implements Serializable {
         this.idPedido = idPedido;
     }
 
-    public Pedido(Integer idPedido, String dataSolicitacao, int aprovado) {
+    public Pedido(Integer idPedido, String dataSolicitacao, int aprovado, int status) {
         this.idPedido = idPedido;
         this.dataSolicitacao = dataSolicitacao;
         this.aprovado = aprovado;
+        this.status = status;
     }
 
     public Integer getIdPedido() {
@@ -106,11 +102,11 @@ public class Pedido implements Serializable {
         this.aprovado = aprovado;
     }
 
-    public Double getValor() {
+    public Float getValor() {
         return valor;
     }
 
-    public void setValor(Double valor) {
+    public void setValor(Float valor) {
         this.valor = valor;
     }
 
@@ -122,13 +118,12 @@ public class Pedido implements Serializable {
         this.justificativa = justificativa;
     }
 
-    @XmlTransient
-    public Collection<PedidoItem> getPedidoItemCollection() {
-        return pedidoItemCollection;
+    public int getStatus() {
+        return status;
     }
 
-    public void setPedidoItemCollection(Collection<PedidoItem> pedidoItemCollection) {
-        this.pedidoItemCollection = pedidoItemCollection;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public NfEntrada getNfEntradaId() {
@@ -139,14 +134,6 @@ public class Pedido implements Serializable {
         this.nfEntradaId = nfEntradaId;
     }
 
-    public Fornecedor getFornecedoridFornecedor() {
-        return fornecedoridFornecedor;
-    }
-
-    public void setFornecedoridFornecedor(Fornecedor fornecedoridFornecedor) {
-        this.fornecedoridFornecedor = fornecedoridFornecedor;
-    }
-
     public Funcionario getFuncionarioidFuncionario() {
         return funcionarioidFuncionario;
     }
@@ -155,13 +142,12 @@ public class Pedido implements Serializable {
         this.funcionarioidFuncionario = funcionarioidFuncionario;
     }
 
-    @XmlTransient
-    public Collection<Cotacao> getCotacaoCollection() {
-        return cotacaoCollection;
+    public Fornecedor getFornecedoridFornecedor() {
+        return fornecedoridFornecedor;
     }
 
-    public void setCotacaoCollection(Collection<Cotacao> cotacaoCollection) {
-        this.cotacaoCollection = cotacaoCollection;
+    public void setFornecedoridFornecedor(Fornecedor fornecedoridFornecedor) {
+        this.fornecedoridFornecedor = fornecedoridFornecedor;
     }
 
     @Override

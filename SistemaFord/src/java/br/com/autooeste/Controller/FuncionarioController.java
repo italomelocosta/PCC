@@ -42,10 +42,6 @@ public class FuncionarioController {
     }
 
     public String alterar(Funcionario funcionario) {
-        String mensagem = validarFuncionario(funcionario);
-        if (mensagem != null) {
-            return mensagem;
-        }
         try {
             funcionarioDAO.atualizar(funcionario);
             confirmarTransacao();
@@ -115,7 +111,7 @@ public class FuncionarioController {
         em.getTransaction().begin();
     }
 
-    private String validarFuncionario(Funcionario funcionario) {
+    /*private String validarFuncionario(Funcionario funcionario) {
         String mensagem = "";
         if (funcionario.getLogin().isEmpty()) {
             mensagem = "O Login não pode ser vazio.";
@@ -128,5 +124,5 @@ public class FuncionarioController {
         } else {
             return mensagem;
         }
-    }
+    }*/
 }

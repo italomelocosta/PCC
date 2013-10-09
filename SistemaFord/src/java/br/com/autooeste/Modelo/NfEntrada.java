@@ -5,23 +5,18 @@
 package br.com.autooeste.Modelo;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -31,6 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "nf_entrada")
 @XmlRootElement
 @NamedQueries({
+    @NamedQuery(name = "NfEntrada.lastReg", query = "SELECT n FROM NfEntrada n where n.idnfEntrada = (select max(nf.idnfEntrada) from NfEntrada nf)"),
     @NamedQuery(name = "NfEntrada.findAll", query = "SELECT n FROM NfEntrada n"),
     @NamedQuery(name = "NfEntrada.findByIdnfEntrada", query = "SELECT n FROM NfEntrada n WHERE n.idnfEntrada = :idnfEntrada"),
     @NamedQuery(name = "NfEntrada.findByDataEmissao", query = "SELECT n FROM NfEntrada n WHERE n.dataEmissao = :dataEmissao"),
@@ -39,25 +35,20 @@ import javax.xml.bind.annotation.XmlTransient;
 public class NfEntrada implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idnf_entrada")
     private Integer idnfEntrada;
     @Column(name = "data_emissao")
-    @Temporal(TemporalType.DATE)
-    private Date dataEmissao;
+    private String dataEmissao;
     @Column(name = "data_entrada")
-    @Temporal(TemporalType.DATE)
-    private Date dataEntrada;
+    private String dataEntrada;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "valor_total")
     private Float valorTotal;
     @JoinColumn(name = "Fornecedor_idFornecedor", referencedColumnName = "idFornecedor")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Fornecedor fornecedoridFornecedor;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "nfEntrada")
-    private Collection<NfEntradaItem> nfEntradaItemCollection;
-    @OneToMany(mappedBy = "nfEntradaId")
-    private Collection<Pedido> pedidoCollection;
 
     public NfEntrada() {
     }
@@ -74,19 +65,19 @@ public class NfEntrada implements Serializable {
         this.idnfEntrada = idnfEntrada;
     }
 
-    public Date getDataEmissao() {
+    public String getDataEmissao() {
         return dataEmissao;
     }
 
-    public void setDataEmissao(Date dataEmissao) {
+    public void setDataEmissao(String dataEmissao) {
         this.dataEmissao = dataEmissao;
     }
 
-    public Date getDataEntrada() {
+    public String getDataEntrada() {
         return dataEntrada;
     }
 
-    public void setDataEntrada(Date dataEntrada) {
+    public void setDataEntrada(String dataEntrada) {
         this.dataEntrada = dataEntrada;
     }
 
@@ -104,24 +95,6 @@ public class NfEntrada implements Serializable {
 
     public void setFornecedoridFornecedor(Fornecedor fornecedoridFornecedor) {
         this.fornecedoridFornecedor = fornecedoridFornecedor;
-    }
-
-    @XmlTransient
-    public Collection<NfEntradaItem> getNfEntradaItemCollection() {
-        return nfEntradaItemCollection;
-    }
-
-    public void setNfEntradaItemCollection(Collection<NfEntradaItem> nfEntradaItemCollection) {
-        this.nfEntradaItemCollection = nfEntradaItemCollection;
-    }
-
-    @XmlTransient
-    public Collection<Pedido> getPedidoCollection() {
-        return pedidoCollection;
-    }
-
-    public void setPedidoCollection(Collection<Pedido> pedidoCollection) {
-        this.pedidoCollection = pedidoCollection;
     }
 
     @Override

@@ -5,9 +5,7 @@
 package br.com.autooeste.Modelo;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,11 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -32,7 +27,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Item.findAll", query = "SELECT i FROM Item i"),
     @NamedQuery(name = "Item.findByIdItem", query = "SELECT i FROM Item i WHERE i.idItem = :idItem"),
     @NamedQuery(name = "Item.findByDescricao", query = "SELECT i FROM Item i WHERE i.descricao = :descricao"),
-    @NamedQuery(name = "Item.findByMedida", query = "SELECT i FROM Item i WHERE i.medida = :medida")})
+    @NamedQuery(name = "Item.findByMedida", query = "SELECT i FROM Item i WHERE i.medida = :medida"),
+    @NamedQuery(name = "Item.findByQuantida", query = "SELECT i FROM Item i WHERE i.quantida = :quantida"),
+    @NamedQuery(name = "Item.findByValor", query = "SELECT i FROM Item i WHERE i.valor = :valor")})
 public class Item implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -46,16 +43,11 @@ public class Item implements Serializable {
     @Basic(optional = false)
     @Column(name = "medida")
     private String medida;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
-    private Collection<PedidoItem> pedidoItemCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
-    private Collection<NfEntradaItem> nfEntradaItemCollection;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "item")
-    private Estoque estoque;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "itemidItem")
-    private Collection<Cotacao> cotacaoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
-    private Collection<RequisicaoItem> requisicaoItemCollection;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "quantida")
+    private Float quantida;
+    @Column(name = "valor")
+    private Float valor;
 
     public Item() {
     }
@@ -94,48 +86,20 @@ public class Item implements Serializable {
         this.medida = medida;
     }
 
-    @XmlTransient
-    public Collection<PedidoItem> getPedidoItemCollection() {
-        return pedidoItemCollection;
+    public Float getQuantida() {
+        return quantida;
     }
 
-    public void setPedidoItemCollection(Collection<PedidoItem> pedidoItemCollection) {
-        this.pedidoItemCollection = pedidoItemCollection;
+    public void setQuantida(Float quantida) {
+        this.quantida = quantida;
     }
 
-    @XmlTransient
-    public Collection<NfEntradaItem> getNfEntradaItemCollection() {
-        return nfEntradaItemCollection;
+    public Float getValor() {
+        return valor;
     }
 
-    public void setNfEntradaItemCollection(Collection<NfEntradaItem> nfEntradaItemCollection) {
-        this.nfEntradaItemCollection = nfEntradaItemCollection;
-    }
-
-    public Estoque getEstoque() {
-        return estoque;
-    }
-
-    public void setEstoque(Estoque estoque) {
-        this.estoque = estoque;
-    }
-
-    @XmlTransient
-    public Collection<Cotacao> getCotacaoCollection() {
-        return cotacaoCollection;
-    }
-
-    public void setCotacaoCollection(Collection<Cotacao> cotacaoCollection) {
-        this.cotacaoCollection = cotacaoCollection;
-    }
-
-    @XmlTransient
-    public Collection<RequisicaoItem> getRequisicaoItemCollection() {
-        return requisicaoItemCollection;
-    }
-
-    public void setRequisicaoItemCollection(Collection<RequisicaoItem> requisicaoItemCollection) {
-        this.requisicaoItemCollection = requisicaoItemCollection;
+    public void setValor(Float valor) {
+        this.valor = valor;
     }
 
     @Override

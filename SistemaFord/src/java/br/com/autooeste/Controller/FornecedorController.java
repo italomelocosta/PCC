@@ -7,9 +7,11 @@ package br.com.autooeste.Controller;
 import br.com.autooeste.DAO.FornecedorDAO;
 import br.com.autooeste.Modelo.Fornecedor;
 import br.com.autooeste.Util.Conexao;
+import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 /**
  *
@@ -22,7 +24,7 @@ public class FornecedorController {
     private FornecedorDAO fornDAO;
     private Fornecedor fornecedor;
     private EntityManager em;
-    
+
     public FornecedorController() {
         em = Conexao.getEntityManager();
         em.getTransaction().begin();
@@ -37,12 +39,12 @@ public class FornecedorController {
     public void setFornecedor(Fornecedor fornecedor) {
         this.fornecedor = fornecedor;
     }
-    
-     public String salvar(Fornecedor forn) {
+
+    public String salvar(Fornecedor forn) {
         /*String mensagem = validarFuncionario(funcionario);
-        if (mensagem != null) {
-            return mensagem;
-        }*/
+         if (mensagem != null) {
+         return mensagem;
+         }*/
         try {
             fornDAO.salvar(forn);
             confirmarTransacao();
@@ -52,8 +54,19 @@ public class FornecedorController {
         }
         return "cadastro_Fornecedor";
     }
-    
-     private void confirmarTransacao() {
+
+    public List<Fornecedor> buscarTodos() {
+        Query query = em.createNamedQuery("Fornecedor.findAll");
+        return query.getResultList();
+    }
+
+    public List<Fornecedor> getBuscar() {
+        //System.out.println("\n\n\n\nBuscar");
+        List<Fornecedor> lista = fornDAO.busca();
+        return lista;
+    }
+
+    private void confirmarTransacao() {
         em.getTransaction().commit();
         em.clear();
         em.getTransaction().begin();

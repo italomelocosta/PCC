@@ -5,7 +5,7 @@
 package br.com.autooeste.Modelo;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -42,7 +42,7 @@ public class Grupouser implements Serializable {
     @Column(name = "nomeGrupo")
     private String nomeGrupo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "grupoUseridGrupoUser")
-    private Collection<Funcionario> funcionarioCollection;
+    private List<Funcionario> funcionarioList;
 
     public Grupouser() {
     }
@@ -73,12 +73,12 @@ public class Grupouser implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Funcionario> getFuncionarioCollection() {
-        return funcionarioCollection;
+    public List<Funcionario> getFuncionarioList() {
+        return funcionarioList;
     }
 
-    public void setFuncionarioCollection(Collection<Funcionario> funcionarioCollection) {
-        this.funcionarioCollection = funcionarioCollection;
+    public void setFuncionarioList(List<Funcionario> funcionarioList) {
+        this.funcionarioList = funcionarioList;
     }
 
     @Override

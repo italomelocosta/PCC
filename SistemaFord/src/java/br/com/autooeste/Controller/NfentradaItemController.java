@@ -4,8 +4,8 @@
  */
 package br.com.autooeste.Controller;
 
-import br.com.autooeste.DAO.PedidoItemDAO;
-import br.com.autooeste.Modelo.PedidoItem;
+import br.com.autooeste.DAO.NfentradaItemDAO;
+import br.com.autooeste.Modelo.NfEntradaItem;
 import br.com.autooeste.Util.Conexao;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -17,34 +17,24 @@ import javax.persistence.EntityManager;
  */
 @ManagedBean
 @RequestScoped
-public class PedidoItemController {
-
+public class NfentradaItemController {
     private EntityManager em;
-    private PedidoItem pI;
-    private PedidoItemDAO pIDAO;
-
-    public PedidoItemController() {
-        this.em = Conexao.getEntityManager();
-        pIDAO = new PedidoItemDAO(em);
-        if (em.isOpen()) {
-            System.out.println("Aberto");
-        }
+    private NfentradaItemDAO nfDAO;
+    public NfentradaItemController() {
+        em = Conexao.getEntityManager();
         em.getTransaction().begin();
-
+        nfDAO = new NfentradaItemDAO(em);        
     }
-
-    public void salvar(PedidoItem pI) {
-        //System.out.println("\n\n\n\n\nPedidoItemController");
-        try {
-            pIDAO.salvar(pI);
+    
+    public void salvar(NfEntradaItem nfItem){
+        try{
+            nfDAO.salvar(nfItem);
             confirmarTransacao();
-        } catch (Exception e) {
+        }catch(Exception e){
             cancelarTransacao();
-            //return e.getMessage();
         }
-        //return "cadastro_Pedido";
     }
-
+    
     private void confirmarTransacao() {
         em.getTransaction().commit();
         em.clear();
@@ -57,13 +47,5 @@ public class PedidoItemController {
         }
         em.clear();
         em.getTransaction().begin();
-    }
-
-    public PedidoItem getpI() {
-        return pI;
-    }
-
-    public void setpI(PedidoItem pI) {
-        this.pI = pI;
     }
 }

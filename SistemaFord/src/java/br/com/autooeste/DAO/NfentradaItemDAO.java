@@ -4,24 +4,21 @@
  */
 package br.com.autooeste.DAO;
 
-import br.com.autooeste.Modelo.PedidoItem;
+import br.com.autooeste.Modelo.NfEntradaItem;
 import javax.persistence.EntityManager;
 
 /**
  *
  * @author Italo
  */
-public class PedidoItemDAO {
-    
+public class NfentradaItemDAO {
     private EntityManager entityManager;
     
-    public PedidoItemDAO(EntityManager em){
+    public NfentradaItemDAO(EntityManager em){
         this.entityManager = em;
     }
     
-    public void salvar(PedidoItem pI){
-        //System.out.println("\n\n\n\n\nDAO");
-        this.entityManager.persist(pI);
+    public void salvar(NfEntradaItem nfeI){
+        this.entityManager.persist(nfeI);
     }
-    
 }

@@ -12,10 +12,15 @@ import javax.persistence.EntityManagerFactory;
  * @author Italo
  */
 public class Conexao {
-    private static EntityManagerFactory emFactory = javax.persistence.Persistence
-            .createEntityManagerFactory("SistemaFordPU");
+    private static EntityManagerFactory emFactory;
+    
+    private Conexao(){}
     
     public static EntityManager getEntityManager(){
+        if(emFactory == null || !emFactory.isOpen()){
+            emFactory = javax.persistence.Persistence
+                .createEntityManagerFactory("SistemaFordPU");
+        }
         return emFactory.createEntityManager();
     }
     

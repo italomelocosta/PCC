@@ -5,7 +5,7 @@
 package br.com.autooeste.Modelo;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Funcionario.findAll", query = "SELECT f FROM Funcionario f"),
     @NamedQuery(name = "Funcionario.findByIdFuncionario", query = "SELECT f FROM Funcionario f WHERE f.idFuncionario = :idFuncionario"),
     @NamedQuery(name = "Funcionario.findByLogin", query = "SELECT f FROM Funcionario f WHERE f.login = :login"),
-    @NamedQuery(name = "Funcionario.findBySenha", query = "SELECT f FROM Funcionario f WHERE f.login = :login and f.senha = :senha"),
+    @NamedQuery(name = "Funcionario.findBySenha", query = "SELECT f FROM Funcionario f WHERE f.senha = :senha and f.login = :login"),
     @NamedQuery(name = "Funcionario.findByNome", query = "SELECT f FROM Funcionario f WHERE f.nome = :nome"),
     @NamedQuery(name = "Funcionario.findByEmail", query = "SELECT f FROM Funcionario f WHERE f.email = :email")})
 public class Funcionario implements Serializable {
@@ -61,9 +61,9 @@ public class Funcionario implements Serializable {
     @ManyToOne(optional = false)
     private Grupouser grupoUseridGrupoUser;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "funcionarioidFuncionario")
-    private Collection<RequisicaoEstoque> requisicaoEstoqueCollection;
+    private List<RequisicaoEstoque> requisicaoEstoqueList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "funcionarioidFuncionario")
-    private Collection<Pedido> pedidoCollection;
+    private List<Pedido> pedidoList;
 
     public Funcionario() {
     }
@@ -136,21 +136,21 @@ public class Funcionario implements Serializable {
     }
 
     @XmlTransient
-    public Collection<RequisicaoEstoque> getRequisicaoEstoqueCollection() {
-        return requisicaoEstoqueCollection;
+    public List<RequisicaoEstoque> getRequisicaoEstoqueList() {
+        return requisicaoEstoqueList;
     }
 
-    public void setRequisicaoEstoqueCollection(Collection<RequisicaoEstoque> requisicaoEstoqueCollection) {
-        this.requisicaoEstoqueCollection = requisicaoEstoqueCollection;
+    public void setRequisicaoEstoqueList(List<RequisicaoEstoque> requisicaoEstoqueList) {
+        this.requisicaoEstoqueList = requisicaoEstoqueList;
     }
 
     @XmlTransient
-    public Collection<Pedido> getPedidoCollection() {
-        return pedidoCollection;
+    public List<Pedido> getPedidoList() {
+        return pedidoList;
     }
 
-    public void setPedidoCollection(Collection<Pedido> pedidoCollection) {
-        this.pedidoCollection = pedidoCollection;
+    public void setPedidoList(List<Pedido> pedidoList) {
+        this.pedidoList = pedidoList;
     }
 
     @Override
