@@ -6,24 +6,22 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
-
-
+    
     <ui:define name="content">
-
-        <h:form id="formPed">
+        <h:form id="formReq">
             <p:layout fullPage="false">  
 
                 <p:layoutUnit position="center" style="margin-left: 220px"> 
-                    <p:panel header="Cadastro de Pedido">
+                    <p:panel header="Requisição de Estoque">
 
                         <p:outputLabel value="Solicitante: " style="margin-left: 34px"/>
-                        <p:inputText id="solicitante" value="#{pedidoController.func.login}" required="true" size="20"/><br/><br/>
+                        <p:inputText id="solicitante" value="#{requisicaoEstoqueController.f.login}" required="true" size="20"/><br/><br/>
 
                         <p:outputLabel value="Data Solicitação: "/>
-                        <p:inputText id="DtSol" value="#{pedidoController.ped.dataSolicitacao}" required="true" size="20"/><br/><br/>
+                        <p:inputText id="DtSol" value="#{requisicaoEstoqueController.bosta}" required="true" size="20"/><br/><br/>
 
                         <p:outputLabel value="Descrição: "/>
-                        <p:inputText id="desc" value="#{pedidoController.ped.descricao}" required="true" size="40"/><br/><br/>
+                        <p:inputText id="desc" value="#{requisicaoEstoqueController.desc}" required="true" size="40"/><br/><br/>
                         
                         <p:growl id="msgs" /> 
 
@@ -36,7 +34,6 @@
                                 <p:outputPanel id="produtos">
                                     <p:dataTable id="item" value="#{itemController.lista}" var="itens"
                                                  selectionMode="single" emptyMessage="Não há produtos!!"
-                                                 filteredValue="#{itemController.lista}"
                                                  rowKey="#{itens.idItem}">
                                         <p:column>
                                             <f:facet name="header"><h:outputText value="Código"/></f:facet>
@@ -49,8 +46,8 @@
                                             <h:outputText value="#{itens.descricao}"/>
                                         </p:column>
                                         <p:column headerText="Quantidade">
-                                            <h:inputText value="#{pedidoController.item.quantida}">
-                                                <p:ajax event="blur" listener="#{pedidoController.item.quantida}"/>
+                                            <h:inputText value="#{requisicaoEstoqueController.item.quantida}">
+                                                <p:ajax event="blur" listener="#{requisicaoEstoqueController.item.quantida}"/>
                                             </h:inputText>
                                         </p:column>
                                         <p:column headerText="Medida">
@@ -58,9 +55,9 @@
                                         </p:column>
                                         <p:column headerText="Ação">
                                             <p:commandButton process="@this" value="Adicionar Item" 
-                                                             action="#{pedidoController.novoItem(itens)}"
-                                                             update=":formPed:coco">
-                                                <p:resetInput target=":formPed:coco"/>
+                                                             action="#{requisicaoEstoqueController.novoItem(itens)}"
+                                                             update=":formReq:coco">
+                                                <p:resetInput target=":formReq:coco"/>
                                             </p:commandButton>
                                         </p:column>
                                     </p:dataTable>
@@ -71,7 +68,7 @@
                         </p:dialog>
 
                         <p:outputPanel id="selecao">
-                            <p:dataTable id="coco" value="#{pedidoController.i}" var="itens2"
+                            <p:dataTable id="coco" value="#{requisicaoEstoqueController.lista}" var="itens2"
                                          selectionMode="single" emptyMessage="Não há produtos!!"
                                          rowKey="#{itens2.idItem}">
                                 <p:column>
@@ -100,15 +97,13 @@
                             </p:dataTable>
                         </p:outputPanel><br/><br/>
 
-                        <p:commandButton value="Salvar" action="#{pedidoController.salvar()}"/>
+                        <p:commandButton value="Salvar" action="#{requisicaoEstoqueController.salvar()}"/>
+                        <p:commandButton value="Imprimir" action="#{requisicaoEstoqueController.gerarRelatorio()}"/>
 
                     </p:panel>
                 </p:layoutUnit>
             </p:layout>
         </h:form>
-
-        <!--/p:panelGrid-->
-
     </ui:define>
 
 </ui:composition>

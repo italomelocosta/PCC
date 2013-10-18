@@ -20,6 +20,10 @@ public class ItemDAO {
         this.entityManager = em;
     }
     
+    public void salvar(Item item){
+        this.entityManager.persist(item);
+    }
+    
     public Item procurar(int cod){
         System.out.println("\n\n\n\n\n\n\n"+cod+"\n\n\n\n\n\n");
         return this.entityManager.find(Item.class, cod);

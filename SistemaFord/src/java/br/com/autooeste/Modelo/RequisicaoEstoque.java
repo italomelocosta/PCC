@@ -30,11 +30,13 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "requisicao_estoque")
 @XmlRootElement
 @NamedQueries({
+    @NamedQuery(name = "RequisicaoEstoque.lastReg", query = "SELECT r FROM RequisicaoEstoque r where r.idRequisicaoestoque = (select max(re.idRequisicaoestoque) from RequisicaoEstoque re)"),
     @NamedQuery(name = "RequisicaoEstoque.findAll", query = "SELECT r FROM RequisicaoEstoque r"),
     @NamedQuery(name = "RequisicaoEstoque.findByIdRequisicaoestoque", query = "SELECT r FROM RequisicaoEstoque r WHERE r.idRequisicaoestoque = :idRequisicaoestoque"),
     @NamedQuery(name = "RequisicaoEstoque.findByDtRequisicao", query = "SELECT r FROM RequisicaoEstoque r WHERE r.dtRequisicao = :dtRequisicao"),
     @NamedQuery(name = "RequisicaoEstoque.findByMotSolicitacao", query = "SELECT r FROM RequisicaoEstoque r WHERE r.motSolicitacao = :motSolicitacao")})
 public class RequisicaoEstoque implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -131,5 +133,4 @@ public class RequisicaoEstoque implements Serializable {
     public String toString() {
         return "br.com.autooeste.Modelo.RequisicaoEstoque[ idRequisicaoestoque=" + idRequisicaoestoque + " ]";
     }
-    
 }

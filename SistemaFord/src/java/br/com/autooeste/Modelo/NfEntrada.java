@@ -5,6 +5,7 @@
 package br.com.autooeste.Modelo;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,8 +16,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -33,6 +36,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "NfEntrada.findByDataEntrada", query = "SELECT n FROM NfEntrada n WHERE n.dataEntrada = :dataEntrada"),
     @NamedQuery(name = "NfEntrada.findByValorTotal", query = "SELECT n FROM NfEntrada n WHERE n.valorTotal = :valorTotal")})
 public class NfEntrada implements Serializable {
+    @OneToMany(mappedBy = "nfEntradaId")
+    private List<Pedido> pedidoList;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -120,6 +125,15 @@ public class NfEntrada implements Serializable {
     @Override
     public String toString() {
         return "br.com.autooeste.Modelo.NfEntrada[ idnfEntrada=" + idnfEntrada + " ]";
+    }
+
+    @XmlTransient
+    public List<Pedido> getPedidoList() {
+        return pedidoList;
+    }
+
+    public void setPedidoList(List<Pedido> pedidoList) {
+        this.pedidoList = pedidoList;
     }
     
 }

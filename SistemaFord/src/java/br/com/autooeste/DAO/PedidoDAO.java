@@ -5,6 +5,7 @@
 package br.com.autooeste.DAO;
 
 import br.com.autooeste.Modelo.Pedido;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
@@ -39,5 +40,15 @@ public class PedidoDAO {
     
     public void atualizar(Pedido pedido){
         this.entityManager.merge(pedido);
+    }
+    
+    public List<Pedido> buscaAprovacao(){
+        Query q = entityManager.createNamedQuery("Pedido.findDesaprovado");
+        return q.getResultList();
+    }
+    
+    public List<Pedido> buscaAprovados(){
+        Query q = entityManager.createNamedQuery("Pedido.findAprovado");
+        return q.getResultList();
     }
 }

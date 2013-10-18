@@ -8,6 +8,8 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -31,6 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Cotacao implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "cotacao_id")
     private Integer cotacaoId;
@@ -40,15 +43,15 @@ public class Cotacao implements Serializable {
     @Basic(optional = false)
     @Column(name = "quantidade")
     private double quantidade;
-    @JoinColumn(name = "Pedido_idPedido", referencedColumnName = "idPedido")
-    @ManyToOne(optional = false)
-    private Pedido pedidoidPedido;
     @JoinColumn(name = "Fornecedor_idFornecedor", referencedColumnName = "idFornecedor")
     @ManyToOne(optional = false)
     private Fornecedor fornecedoridFornecedor;
     @JoinColumn(name = "Item_idItem", referencedColumnName = "idItem")
     @ManyToOne(optional = false)
     private Item itemidItem;
+    @JoinColumn(name = "Pedido_idPedido", referencedColumnName = "idPedido")
+    @ManyToOne(optional = false)
+    private Pedido pedidoidPedido;
 
     public Cotacao() {
     }
@@ -87,14 +90,6 @@ public class Cotacao implements Serializable {
         this.quantidade = quantidade;
     }
 
-    public Pedido getPedidoidPedido() {
-        return pedidoidPedido;
-    }
-
-    public void setPedidoidPedido(Pedido pedidoidPedido) {
-        this.pedidoidPedido = pedidoidPedido;
-    }
-
     public Fornecedor getFornecedoridFornecedor() {
         return fornecedoridFornecedor;
     }
@@ -109,6 +104,14 @@ public class Cotacao implements Serializable {
 
     public void setItemidItem(Item itemidItem) {
         this.itemidItem = itemidItem;
+    }
+
+    public Pedido getPedidoidPedido() {
+        return pedidoidPedido;
+    }
+
+    public void setPedidoidPedido(Pedido pedidoidPedido) {
+        this.pedidoidPedido = pedidoidPedido;
     }
 
     @Override

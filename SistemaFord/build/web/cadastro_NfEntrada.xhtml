@@ -12,21 +12,21 @@
             <p:layout fullPage="false">  
 
                 <p:layoutUnit position="center" style="margin-left: 220px"> 
-                    <p:panel header="Cadastro de Nota Fista de Entrada">
+                    <p:panel id="Nf" header="Cadastro de Nota Fista de Entrada">
 
-                        <p:outputLabel value="Codigo pedido: " style="margin-left: 34px"/>
+                        <p:outputLabel value="Codigo pedido: " style="margin-left: 27px"/>
                         <p:inputText value="#{nfentradaController.p.idPedido}" required="true" size="20">
                             <p:ajax event="blur" listener="#{nfentradaController.p.idPedido}"/>
                         </p:inputText><br/><br/>
 
                         <p:outputLabel value="Código Fornecedor: "/>
-                        <p:inputText value="#{nfentradaController.f.idFornecedor}" required="true" size="20">
+                        <p:inputText value="#{nfentradaController.f.idFornecedor}" required="true" size="10">
                             <p:ajax event="blur" listener="#{nfentradaController.f.idFornecedor}"/>
                         </p:inputText>
-                        <p:commandButton process="@this" value="Buscar Itens" onclick="dialogForn.show();" 
+                        <p:commandButton style="margin-left: 30px" process="@this" value="Consultar Fornecedores" onclick="dialogForn.show();" 
                                          icon="ui-icon-extlink"/>  <br/><br/>
 
-                        <p:dialog header="Selecione os Itens" showEffect="explode"
+                        <p:dialog showEffect="explode"
                                   hideEffect="explode"
                                   widgetVar="dialogForn">
 
@@ -50,12 +50,12 @@
                             </p:panel><br/><br/>
                         </p:dialog>
 
-                        <p:outputLabel value="Data de Emissão: " style="margin-left: 34px"/>
+                        <p:outputLabel value="Data de Emissão: " style="margin-left: 10px"/>
                         <p:inputText value="#{nfentradaController.nf.dataEmissao}" required="true" size="20">
                             <p:ajax event="blur" listener="#{nfentradaController.nf.dataEmissao}"/>
                         </p:inputText>    <br/><br/>
 
-                        <p:outputLabel value="Data de Entrada: " style="margin-left: 34px"/>
+                        <p:outputLabel value="Data de Entrada: " style="margin-left: 15px"/>
                         <p:inputText value="#{nfentradaController.nf.dataEntrada}" required="true" size="20">
                             <p:ajax event="blur" listener="#{nfentradaController.nf.dataEntrada}"/>
                         </p:inputText>    <br/><br/>
@@ -139,12 +139,14 @@
                             </p:dataTable>
                         </p:outputPanel><br/><br/>
                         
-                        <p:outputLabel value="Valor Total: "/>
+                        <p:outputLabel value="Valor Total: " style="margin-left: 45px"/>
                         <p:inputText value="#{nfentradaController.nf.valorTotal}" required="true" size="20">
                             <p:ajax event="blur" listener="#{nfentradaController.nf.valorTotal}"/>
-                        </p:inputText>
+                        </p:inputText><br/><br/>
 
-                        <p:commandButton value="Salvar" process="@this" action="#{nfentradaController.salvar()}"/>
+                        <p:commandButton style="margin-left: 50px" value="Salvar" process="@this" 
+                                         update="Nf item"
+                                         action="#{nfentradaController.salvar()}"/>
                     </p:panel>
                 </p:layoutUnit>
             </p:layout>

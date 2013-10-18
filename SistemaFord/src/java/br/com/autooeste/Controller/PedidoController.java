@@ -37,7 +37,7 @@ public class PedidoController implements Serializable {
     private PedidoItemController pIController;
     private Funcionario func;
     private FuncionarioController fController;
-    private int coco = 0;
+    private int coco;
     private Item item;
 
     public PedidoController() {
@@ -48,7 +48,7 @@ public class PedidoController implements Serializable {
         pIController = new PedidoItemController();
         func = new Funcionario();
         fController = new FuncionarioController();
-        pI = new PedidoItem();
+        //pI = new PedidoItem();
         item = new Item();
     }
 
@@ -56,17 +56,41 @@ public class PedidoController implements Serializable {
         if (i == null) {
             i = new ArrayList<Item>();
         }
-        //System.out.println("\n\n\n\n\n" + item.getQuantida());
-        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-        HttpServletRequest rq = (HttpServletRequest) context.getRequest();
         itens.setQuantida(item.getQuantida());
         i.add(itens);
     }
 
+    public void alteraAprovacaoA() {
+        Pedido pedido = new Pedido();
+        pedido = buscar(coco);
+        pedido.setAprovado(1);
+        pedido.setStatus(1);
+        pedido.setJustificativa(ped.getJustificativa());
+        try {
+            atualizar(pedido);
+            confirmarTransacao();
+        } catch (Exception e) {
+            e.printStackTrace();
+            cancelarTransacao();
+        }
+    }
+    
+    public void alteraAprovacaoR() {
+        Pedido pedido = new Pedido();
+        pedido = buscar(coco);
+        pedido.setAprovado(2);
+        pedido.setStatus(4);
+        pedido.setJustificativa(ped.getJustificativa());
+        try {
+            atualizar(pedido);
+            confirmarTransacao();
+        } catch (Exception e) {
+            e.printStackTrace();
+            cancelarTransacao();
+        }
+    }
+
     public String salvar() {
-        //ItemController ic = new ItemController();
-        //i = (ArrayList<Item>) ic.getLista();
-        //System.out.println("\n\n\n\n" + func.getLogin());
         Funcionario buscaFunc = fController.buscaFunc(func);
         ped.setAprovado(0);
         ped.setStatus(0);
@@ -76,17 +100,18 @@ public class PedidoController implements Serializable {
             confirmarTransacao();
         } catch (Exception e) {
             cancelarTransacao();
-            //return e.getMessage();
         }
         Pedido retorno = pDAO.procurar();
-        pI.setPedidoidPedido(retorno);
 
         int tamanho = i.size() - 1;
         for (int j = 0; j <= tamanho; j++) {
+            pI = new PedidoItem();
+            pI.setPedidoidPedido(retorno);
             pI.setQuantidadePedido(i.get(j).getQuantida());
             pI.setItemidItem(i.get(j));
             try {
                 pIController.salvar(pI);
+                confirmarTransacao();
             } catch (Exception e) {
                 cancelarTransacao();
             }
@@ -95,18 +120,26 @@ public class PedidoController implements Serializable {
         }
         return "cadastro_pedido";
     }
-    
-    public void atualizar(Pedido pedido){
-        try{
+
+    public void atualizar(Pedido pedido) {
+        try {
             pDAO.atualizar(pedido);
             confirmarTransacao();
-        }catch(Exception e){
+        } catch (Exception e) {
             cancelarTransacao();
         }
     }
-    
-    public Pedido buscar(int codigo){
+
+    public Pedido buscar(int codigo) {
         return pDAO.buscarPedido(codigo);
+    }
+
+    public List<Pedido> getBuscarDesaprovado() {
+        return pDAO.buscaAprovacao();
+    }
+    
+    public List<Pedido> getBuscarAprovado() {
+        return pDAO.buscaAprovados();
     }
 
     private void confirmarTransacao() {

@@ -22,6 +22,9 @@
                         <p:outputLabel value="Data Solicitação: "/>
                         <p:inputText id="DtSol" value="#{pedidoController.ped.dataSolicitacao}" required="true" size="20"/><br/><br/>
 
+                        <p:outputLabel value="Descrição: "/>
+                        <p:inputText id="desc" value="#{pedidoController.ped.descricao}" required="true" size="40"/><br/><br/>
+                        
                         <p:growl id="msgs" /> 
 
                         <p:commandButton process="@this" value="Consulta Itens" onclick="dialogItens.show();" 

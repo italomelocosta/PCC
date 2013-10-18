@@ -31,6 +31,7 @@ public class NfentradaItemController {
             nfDAO.salvar(nfItem);
             confirmarTransacao();
         }catch(Exception e){
+            e.printStackTrace();
             cancelarTransacao();
         }
     }

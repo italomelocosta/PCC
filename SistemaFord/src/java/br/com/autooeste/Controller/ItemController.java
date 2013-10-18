@@ -14,6 +14,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+
 /**
  *
  * @author Italo
@@ -24,18 +25,25 @@ public class ItemController implements Serializable {
 
     private EntityManager em;
     private List<Item> lista = new ArrayList<Item>();
-    private List<Item> lista2;
     private Item item;
     private int cod;
     private ItemDAO iDAO;
-    
+
     public ItemController() {
         em = Conexao.getEntityManager();
         em.getTransaction().begin();
         this.item = new Item();
         lista = buscarTodos();
-        lista2 = new ArrayList<Item>();
         iDAO = new ItemDAO(em);
+    }
+
+    public void salvar() {
+        try {
+            iDAO.salvar(item);
+            confirmarTransacao();
+        } catch (Exception e) {
+            cancelarTransacao();
+        }
     }
 
     public List<Item> getLista() {
@@ -53,16 +61,6 @@ public class ItemController implements Serializable {
         //return iDAO.buscaTodos();
         //return null;
     }
-    
-    public String busca(){
-        System.out.println("\n\n\n\n\n\n\n"+item.getIdItem()+"\n\n\n\n\n\n");
-        //lista2.add(lista.get(cod));
-        //Item i = new Item();
-        //int coco = item.getIdItem();
-        //i = iDAO.procurar(coco);
-        //lista2.add(i);
-        return null;
-    }
 
     public int getCod() {
         return cod;
@@ -79,12 +77,18 @@ public class ItemController implements Serializable {
     public void setItem(Item item) {
         this.item = item;
     }
-    
-    public List<Item> getLista2() {
-        return lista2;
+
+    private void confirmarTransacao() {
+        em.getTransaction().commit();
+        em.clear();
+        em.getTransaction().begin();
     }
 
-    public void setLista2(List<Item> lista2) {
-        this.lista2 = lista2;
+    private void cancelarTransacao() {
+        if (em.getTransaction().isActive()) {
+            em.getTransaction().rollback();
+        }
+        em.clear();
+        em.getTransaction().begin();
     }
 }

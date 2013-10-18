@@ -5,7 +5,9 @@
 package br.com.autooeste.Modelo;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,8 +17,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -26,14 +30,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "pedido")
 @XmlRootElement
 @NamedQueries({
+    @NamedQuery(name = "Pedido.findDesaprovado", query = "SELECT p FROM Pedido p WHERE p.aprovado = 0"),
+    @NamedQuery(name = "Pedido.findAprovado", query = "SELECT p FROM Pedido p WHERE p.aprovado = 1"),
+    @NamedQuery(name = "Pedido.lastReg", query = "SELECT p FROM Pedido p where p.idPedido = (select max(pe.idPedido) from Pedido pe)"),
     @NamedQuery(name = "Pedido.findAll", query = "SELECT p FROM Pedido p"),
     @NamedQuery(name = "Pedido.findByIdPedido", query = "SELECT p FROM Pedido p WHERE p.idPedido = :idPedido"),
     @NamedQuery(name = "Pedido.findByDataSolicitacao", query = "SELECT p FROM Pedido p WHERE p.dataSolicitacao = :dataSolicitacao"),
     @NamedQuery(name = "Pedido.findByAprovado", query = "SELECT p FROM Pedido p WHERE p.aprovado = :aprovado"),
     @NamedQuery(name = "Pedido.findByValor", query = "SELECT p FROM Pedido p WHERE p.valor = :valor"),
     @NamedQuery(name = "Pedido.findByJustificativa", query = "SELECT p FROM Pedido p WHERE p.justificativa = :justificativa"),
-    @NamedQuery(name = "Pedido.findByStatus", query = "SELECT p FROM Pedido p WHERE p.status = :status")})
+    @NamedQuery(name = "Pedido.findByStatus", query = "SELECT p FROM Pedido p WHERE p.status = :status"),
+    @NamedQuery(name = "Pedido.findByDescricao", query = "SELECT p FROM Pedido p WHERE p.descricao = :descricao")})
 public class Pedido implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pedidoidPedido")
+    private List<Cotacao> cotacaoList;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,6 +64,9 @@ public class Pedido implements Serializable {
     @Basic(optional = false)
     @Column(name = "status")
     private int status;
+    @Basic(optional = false)
+    @Column(name = "descricao")
+    private String descricao;
     @JoinColumn(name = "nf_entrada_id", referencedColumnName = "idnf_entrada")
     @ManyToOne
     private NfEntrada nfEntradaId;
@@ -71,11 +84,12 @@ public class Pedido implements Serializable {
         this.idPedido = idPedido;
     }
 
-    public Pedido(Integer idPedido, String dataSolicitacao, int aprovado, int status) {
+    public Pedido(Integer idPedido, String dataSolicitacao, int aprovado, int status, String descricao) {
         this.idPedido = idPedido;
         this.dataSolicitacao = dataSolicitacao;
         this.aprovado = aprovado;
         this.status = status;
+        this.descricao = descricao;
     }
 
     public Integer getIdPedido() {
@@ -126,6 +140,14 @@ public class Pedido implements Serializable {
         this.status = status;
     }
 
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
     public NfEntrada getNfEntradaId() {
         return nfEntradaId;
     }
@@ -173,6 +195,15 @@ public class Pedido implements Serializable {
     @Override
     public String toString() {
         return "br.com.autooeste.Modelo.Pedido[ idPedido=" + idPedido + " ]";
+    }
+
+    @XmlTransient
+    public List<Cotacao> getCotacaoList() {
+        return cotacaoList;
+    }
+
+    public void setCotacaoList(List<Cotacao> cotacaoList) {
+        this.cotacaoList = cotacaoList;
     }
     
 }

@@ -34,8 +34,17 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Fornecedor.findByIdFornecedor", query = "SELECT f FROM Fornecedor f WHERE f.idFornecedor = :idFornecedor"),
     @NamedQuery(name = "Fornecedor.findByRazaosocial", query = "SELECT f FROM Fornecedor f WHERE f.razaosocial = :razaosocial"),
     @NamedQuery(name = "Fornecedor.findByCnpj", query = "SELECT f FROM Fornecedor f WHERE f.cnpj = :cnpj"),
-    @NamedQuery(name = "Fornecedor.findByTelefone", query = "SELECT f FROM Fornecedor f WHERE f.telefone = :telefone")})
+    @NamedQuery(name = "Fornecedor.findByTelefone", query = "SELECT f FROM Fornecedor f WHERE f.telefone = :telefone"),
+    @NamedQuery(name = "Fornecedor.findByEmail", query = "SELECT f FROM Fornecedor f WHERE f.email = :email")})
 public class Fornecedor implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fornecedoridFornecedor")
+    private List<Estoque> estoqueList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fornecedoridFornecedor")
+    private List<Cotacao> cotacaoList;
+    @OneToMany(mappedBy = "fornecedoridFornecedor")
+    private List<NfEntrada> nfEntradaList;
+    @OneToMany(mappedBy = "fornecedoridFornecedor")
+    private List<Pedido> pedidoList;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,17 +60,12 @@ public class Fornecedor implements Serializable {
     @Basic(optional = false)
     @Column(name = "telefone")
     private String telefone;
+    @Basic(optional = false)
+    @Column(name = "email")
+    private String email;
     @JoinColumn(name = "Endereco_idEndereco", referencedColumnName = "idEndereco")
     @ManyToOne(optional = false)
     private Endereco enderecoidEndereco;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fornecedoridFornecedor")
-    private List<NfEntrada> nfEntradaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fornecedoridFornecedor")
-    private List<Estoque> estoqueList;
-    @OneToMany(mappedBy = "fornecedoridFornecedor")
-    private List<Pedido> pedidoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fornecedoridFornecedor")
-    private List<Cotacao> cotacaoList;
 
     public Fornecedor() {
     }
@@ -70,11 +74,12 @@ public class Fornecedor implements Serializable {
         this.idFornecedor = idFornecedor;
     }
 
-    public Fornecedor(Integer idFornecedor, String razaosocial, String cnpj, String telefone) {
+    public Fornecedor(Integer idFornecedor, String razaosocial, String cnpj, String telefone, String email) {
         this.idFornecedor = idFornecedor;
         this.razaosocial = razaosocial;
         this.cnpj = cnpj;
         this.telefone = telefone;
+        this.email = email;
     }
 
     public Integer getIdFornecedor() {
@@ -109,48 +114,20 @@ public class Fornecedor implements Serializable {
         this.telefone = telefone;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public Endereco getEnderecoidEndereco() {
         return enderecoidEndereco;
     }
 
     public void setEnderecoidEndereco(Endereco enderecoidEndereco) {
         this.enderecoidEndereco = enderecoidEndereco;
-    }
-
-    @XmlTransient
-    public List<NfEntrada> getNfEntradaList() {
-        return nfEntradaList;
-    }
-
-    public void setNfEntradaList(List<NfEntrada> nfEntradaList) {
-        this.nfEntradaList = nfEntradaList;
-    }
-
-    @XmlTransient
-    public List<Estoque> getEstoqueList() {
-        return estoqueList;
-    }
-
-    public void setEstoqueList(List<Estoque> estoqueList) {
-        this.estoqueList = estoqueList;
-    }
-
-    @XmlTransient
-    public List<Pedido> getPedidoList() {
-        return pedidoList;
-    }
-
-    public void setPedidoList(List<Pedido> pedidoList) {
-        this.pedidoList = pedidoList;
-    }
-
-    @XmlTransient
-    public List<Cotacao> getCotacaoList() {
-        return cotacaoList;
-    }
-
-    public void setCotacaoList(List<Cotacao> cotacaoList) {
-        this.cotacaoList = cotacaoList;
     }
 
     @Override
@@ -176,6 +153,42 @@ public class Fornecedor implements Serializable {
     @Override
     public String toString() {
         return "br.com.autooeste.Modelo.Fornecedor[ idFornecedor=" + idFornecedor + " ]";
+    }
+
+    @XmlTransient
+    public List<NfEntrada> getNfEntradaList() {
+        return nfEntradaList;
+    }
+
+    public void setNfEntradaList(List<NfEntrada> nfEntradaList) {
+        this.nfEntradaList = nfEntradaList;
+    }
+
+    @XmlTransient
+    public List<Pedido> getPedidoList() {
+        return pedidoList;
+    }
+
+    public void setPedidoList(List<Pedido> pedidoList) {
+        this.pedidoList = pedidoList;
+    }
+
+    @XmlTransient
+    public List<Cotacao> getCotacaoList() {
+        return cotacaoList;
+    }
+
+    public void setCotacaoList(List<Cotacao> cotacaoList) {
+        this.cotacaoList = cotacaoList;
+    }
+
+    @XmlTransient
+    public List<Estoque> getEstoqueList() {
+        return estoqueList;
+    }
+
+    public void setEstoqueList(List<Estoque> estoqueList) {
+        this.estoqueList = estoqueList;
     }
     
 }

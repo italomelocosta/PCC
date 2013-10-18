@@ -61,7 +61,6 @@ public class FornecedorController {
     }
 
     public List<Fornecedor> getBuscar() {
-        //System.out.println("\n\n\n\nBuscar");
         List<Fornecedor> lista = fornDAO.busca();
         return lista;
     }

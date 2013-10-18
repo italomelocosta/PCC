@@ -8,22 +8,19 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="content">
-        <h:form id="formnf">
+
+        <h:form id="formEst">
             <p:layout fullPage="false">  
 
                 <p:layoutUnit position="center" style="margin-left: 220px"> 
-                    <p:panel id="Nf" header="Cadastro de Nota Fista de Entrada">
-
-                        <p:outputLabel value="Codigo pedido: " style="margin-left: 27px"/>
-                        <p:inputText value="#{nfentradaController.p.idPedido}" required="true" size="20">
-                            <p:ajax event="blur" listener="#{nfentradaController.p.idPedido}"/>
-                        </p:inputText><br/><br/>
-
-                        <p:outputLabel value="Código Fornecedor: "/>
-                        <p:inputText value="#{nfentradaController.f.idFornecedor}" required="true" size="10">
-                            <p:ajax event="blur" listener="#{nfentradaController.f.idFornecedor}"/>
+                    <p:panel header="Cadastro de Estoque">
+                        
+                        <p:outputLabel value="Fornecedor: " style="margin-left: 34px"/>
+                        <p:inputText id="forn" value="#{estoqueController.f.idFornecedor}" required="true" size="20">
+                            <p:ajax event="blur" listener="#{estoqueController.f.idFornecedor}"/>
                         </p:inputText>
-                        <p:commandButton style="margin-left: 30px" process="@this" value="Consultar Fornecedores" onclick="dialogForn.show();" 
+                        
+                         <p:commandButton style="margin-left: 30px" process="@this" value="Consultar Fornecedores" onclick="dialogForn.show();" 
                                          icon="ui-icon-extlink"/>  <br/><br/>
 
                         <p:dialog showEffect="explode"
@@ -50,21 +47,8 @@
                             </p:panel><br/><br/>
                         </p:dialog>
 
-                        <p:outputLabel value="Data de Emissão: " style="margin-left: 10px"/>
-                        <p:inputText value="#{nfentradaController.nf.dataEmissao}" required="true" size="20">
-                            <p:ajax event="blur" listener="#{nfentradaController.nf.dataEmissao}"/>
-                        </p:inputText>    <br/><br/>
-
-                        <p:outputLabel value="Data de Entrada: " style="margin-left: 15px"/>
-                        <p:inputText value="#{nfentradaController.nf.dataEntrada}" required="true" size="20">
-                            <p:ajax event="blur" listener="#{nfentradaController.nf.dataEntrada}"/>
-                        </p:inputText>    <br/><br/>
-
-                        <p:growl id="msgs" /> 
-
-                        <p:commandButton process="@this" value="Buscar Itens" onclick="dialogItens.show();" 
+                        <p:commandButton process="@this" value="Consulta Itens" onclick="dialogItens.show();" 
                                          icon="ui-icon-extlink"/>  <br/><br/>
-
                         <p:dialog header="Selecione os Itens" showEffect="explode"
                                   hideEffect="explode"
                                   widgetVar="dialogItens">
@@ -84,24 +68,19 @@
                                             <!--f:facet name="header"><h:outputText value="Descrição"/></f:facet-->
                                             <h:outputText value="#{itens.descricao}"/>
                                         </p:column>
-                                        <p:column headerText="Quant. Comprada">
-                                            <h:inputText value="#{nfentradaController.item.quantida}">
-                                                <p:ajax event="blur" listener="#{nfentradaController.item.quantida}"/>
+                                        <p:column headerText="Quantidade">
+                                            <h:inputText value="#{estoqueController.i.quantida}">
+                                                <p:ajax event="blur" listener="#{estoqueController.i.quantida}"/>
                                             </h:inputText>
                                         </p:column>
                                         <p:column headerText="Medida">
                                             <h:outputText value="#{itens.medida}"/>
                                         </p:column>
-                                        <p:column headerText="Valor">
-                                            <h:inputText value="#{nfentradaController.item.valor}">
-                                                <p:ajax event="blur" listener="#{nfentradaController.item.valor}"/>
-                                            </h:inputText>
-                                        </p:column>
                                         <p:column headerText="Ação">
                                             <p:commandButton process="@this" value="Adicionar Item" 
-                                                             action="#{nfentradaController.novoItem(itens)}"
-                                                             update=":formnf:coco">
-                                                <p:resetInput target=":formnf:coco"/>
+                                                             action="#{estoqueController.novoItem(itens)}"
+                                                             update=":formEst:coco">
+                                                <p:resetInput target=":formEst:coco"/>
                                             </p:commandButton>
                                         </p:column>
                                     </p:dataTable>
@@ -112,25 +91,27 @@
                         </p:dialog>
 
                         <p:outputPanel id="selecao">
-                            <p:dataTable id="coco" value="#{nfentradaController.lista}" var="itens2"
+                            <p:dataTable id="coco" value="#{estoqueController.lista}" var="itens2"
                                          selectionMode="single" emptyMessage="Não há produtos!!"
                                          rowKey="#{itens2.idItem}">
-                                <p:column headerText="Código">
+                                <p:column>
+                                    <f:facet name="header"><h:outputText value="Código"/></f:facet>
                                     <h:outputText value="#{itens2.idItem}"/>
                                 </p:column>
-                                <p:column headerText="Descrição">
+                                <p:column>
+                                    <f:facet name="header"><h:outputText value="Descricao"/></f:facet>
                                     <h:outputText value="#{itens2.descricao}"/>
                                 </p:column>
-                                <p:column headerText="Quantidade">
-                                    <h:outputText value="#{itens2.quantida}"/>
-                                </p:column>
-                                <p:column headerText="Medida">
+                                <p:column>
+                                    <f:facet name="header"><h:outputText value="Medida"/></f:facet>
                                     <h:outputText value="#{itens2.medida}"/>
                                 </p:column>
-                                <p:column headerText="Valor">
-                                    <h:outputText value="#{itens2.valor}"/>
+                                <p:column>
+                                    <f:facet name="header"><h:outputText value="Quantidade"/></f:facet>
+                                    <h:outputText value="#{itens2.quantida}"/>
                                 </p:column>
-                                <p:column headerText="Ação">
+                                <p:column>
+                                    <f:facet name="header"><h:outputText value="Ação"/></f:facet>
                                     <p:commandLink value="Remover do carrinho">
                                         <p:collector value="#{itens2}"
                                                      removeFrom="#{pedidoController.i}"/>
@@ -138,15 +119,10 @@
                                 </p:column>
                             </p:dataTable>
                         </p:outputPanel><br/><br/>
-                        
-                        <p:outputLabel value="Valor Total: " style="margin-left: 45px"/>
-                        <p:inputText value="#{nfentradaController.nf.valorTotal}" required="true" size="20">
-                            <p:ajax event="blur" listener="#{nfentradaController.nf.valorTotal}"/>
-                        </p:inputText><br/><br/>
 
-                        <p:commandButton style="margin-left: 50px" value="Salvar" process="@this" 
-                                         update="Nf item"
-                                         action="#{nfentradaController.salvar()}"/>
+                        <p:commandButton value="Salvar" action="#{estoqueController.salvar()}">
+                            <p:resetInput target="formEst"/>
+                        </p:commandButton>
                     </p:panel>
                 </p:layoutUnit>
             </p:layout>

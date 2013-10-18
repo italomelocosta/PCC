@@ -4,10 +4,9 @@
  */
 package br.com.autooeste.Controller;
 
-import br.com.autooeste.DAO.PedidoItemDAO;
-import br.com.autooeste.Modelo.PedidoItem;
+import br.com.autooeste.DAO.RequisicaoItemDAO;
+import br.com.autooeste.Modelo.RequisicaoItem;
 import br.com.autooeste.Util.Conexao;
-import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.persistence.EntityManager;
@@ -18,40 +17,26 @@ import javax.persistence.EntityManager;
  */
 @ManagedBean
 @RequestScoped
-public class PedidoItemController {
+public class RequisicaoItemController {
 
     private EntityManager em;
-    private PedidoItem pI;
-    private PedidoItemDAO pIDAO;
-
-    public PedidoItemController() {
+    private RequisicaoItemDAO riDAO;
+    
+    public RequisicaoItemController() {
         this.em = Conexao.getEntityManager();
-        pIDAO = new PedidoItemDAO(em);
-        em.getTransaction().begin();
-
+        this.em.getTransaction().begin();
+        riDAO = new RequisicaoItemDAO(em);
     }
-
-    public void salvar(PedidoItem pI) {
-        //System.out.println("\n\n\n\n\nPedidoItemController");
+    
+    public void salvar(RequisicaoItem rI) {
         try {
-            pIDAO.salvar(pI);
+            riDAO.salvar(rI);
             confirmarTransacao();
         } catch (Exception e) {
             cancelarTransacao();
-            //return e.getMessage();
-        }
-        //return "cadastro_Pedido";
-    }
-
-    public List<PedidoItem> buscar(int codigo) {
-        try {
-            return pIDAO.buscar(codigo);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
         }
     }
-
+    
     private void confirmarTransacao() {
         em.getTransaction().commit();
         em.clear();
@@ -64,13 +49,5 @@ public class PedidoItemController {
         }
         em.clear();
         em.getTransaction().begin();
-    }
-
-    public PedidoItem getpI() {
-        return pI;
-    }
-
-    public void setpI(PedidoItem pI) {
-        this.pI = pI;
     }
 }

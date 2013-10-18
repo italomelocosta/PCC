@@ -10,6 +10,7 @@ import br.com.autooeste.Modelo.Item;
 import br.com.autooeste.Modelo.NfEntrada;
 import br.com.autooeste.Modelo.NfEntradaItem;
 import br.com.autooeste.Modelo.Pedido;
+import br.com.autooeste.Modelo.PedidoItem;
 import br.com.autooeste.Util.Conexao;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ManagedBean
 @SessionScoped
-public class NfentradaController implements Serializable{
+public class NfentradaController implements Serializable {
 
     private NfentradaDAO nfDAO;
     private NfEntrada nf;
@@ -39,6 +40,7 @@ public class NfentradaController implements Serializable{
     private PedidoController pController;
     private NfEntradaItem nfItem;
     private NfentradaItemController nfItemController;
+    private PedidoItemController pIController;
 
     public NfentradaController() {
         em = Conexao.getEntityManager();
@@ -48,7 +50,8 @@ public class NfentradaController implements Serializable{
         f = new Fornecedor();
         p = new Pedido();
         pController = new PedidoController();
-        nfItem = new NfEntradaItem();
+        //nfItem = new NfEntradaItem();
+        pIController = new PedidoItemController();
         nfItemController = new NfentradaItemController();
         lista = new ArrayList<Item>();
         item = new Item();
@@ -69,15 +72,16 @@ public class NfentradaController implements Serializable{
             nfDAO.salvar(nf);
             confirmarTransacao();
         } catch (Exception e) {
-            System.out.println("Deu Excessão");
-            //e.printStackTrace();
             cancelarTransacao();
         }
+        int codigo = p.getIdPedido();
         NfEntrada buscaNota = nfDAO.procurar();
-        Pedido retorno = pController.buscar(p.getIdPedido());
+        Pedido retorno = pController.buscar(codigo);
+        
         retorno.setNfEntradaId(buscaNota);
         retorno.setValor(nf.getValorTotal());
         retorno.setFornecedoridFornecedor(f);
+        retorno.setStatus(2);
         try {
             pController.atualizar(retorno);
             confirmarTransacao();
@@ -85,9 +89,12 @@ public class NfentradaController implements Serializable{
             e.printStackTrace();
             cancelarTransacao();
         }
-        nfItem.setNfEntradaIdnfEntrada(buscaNota);
         int tamanho = lista.size() - 1;
+        //System.out.println("\n\n\n\n" + tamanho);
         for (int j = 0; j <= tamanho; j++) {
+            nfItem = new NfEntradaItem();
+            nfItem.setNfEntradaIdnfEntrada(buscaNota);
+            //System.out.println("\n\n\n\n" + lista.get(j).getDescricao());
             nfItem.setItemidItem(lista.get(j));
             nfItem.setQuantidadeComprada(lista.get(j).getQuantida());
             nfItem.setValor(lista.get(j).getValor());

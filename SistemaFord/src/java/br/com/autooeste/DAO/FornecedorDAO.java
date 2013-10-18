@@ -25,7 +25,7 @@ public class FornecedorDAO {
         this.entityManager.persist(fornecedor);
     }
 
-    public List busca() {
+    public List<Fornecedor> busca() {
         Query q = entityManager.createNamedQuery("Fornecedor.findAll");
         return q.getResultList();
     }

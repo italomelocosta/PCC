@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="formReprova">
+            <p:layout fullPage="false">  
+
+                <p:layoutUnit position="center" style="margin-left: 220px"> 
+                    <p:panel header="Reprovação de Pedidos">
+                        <p:outputLabel value="Codigo pedido: " style="margin-left: 27px"/>
+                        <p:inputText value="#{pedidoController.coco}" required="true" size="20">
+                            <p:ajax event="blur" listener="#{pedidoController.coco}"/>
+                        </p:inputText>
+
+                        <p:commandButton style="margin-left: 30px" process="@this" value="Consultar Pedidos em aberto" onclick="dialogForn.show();" 
+                                         icon="ui-icon-extlink"/>  <br/><br/>
+
+                        <p:dialog showEffect="explode"
+                                  hideEffect="explode"
+                                  widgetVar="dialogForn">
+
+                            <p:panel header="Pedidos em abertos">
+                                <p:outputPanel>
+                                    <p:dataTable id="pedAbertos" value="#{pedidoController.buscarDesaprovado}" var="ped"
+                                                 selectionMode="single" emptyMessage="Não há Pedidos!!"
+                                                 rowKey="#{ped.idPedido}">
+                                        <p:column headerText="Código">
+                                            <h:outputText value="#{ped.idPedido}"/>
+                                        </p:column>
+                                        <p:column headerText="Descrição">
+                                            <!--f:facet name="header"><h:outputText value="Descrição"/></f:facet-->
+                                            <h:outputText value="#{ped.descricao}"/>
+                                        </p:column>
+                                    </p:dataTable>
+
+                                </p:outputPanel>
+
+                            </p:panel><br/><br/>
+                        </p:dialog>
+                        
+                        <p:outputLabel value="Justificativa:" style="margin-left: 39px"/>
+                        <p:inputText value="#{pedidoController.ped.justificativa}"
+                                         style="margin-left: 39px"
+                                         size="70">
+                            <p:ajax event="blur" listener="#{pedidoController.ped.justificativa}"/>
+                        </p:inputText>
+                            <br/><br/>
+
+                        
+                        <p:commandButton action="#{pedidoController.alteraAprovacaoR()}" 
+                                         value="Enviar" process="@this"
+                                         style="margin-left: 35px"
+                                         update=":formReprova:pedAbertos"/>
+                    </p:panel>
+                </p:layoutUnit>
+            </p:layout>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
